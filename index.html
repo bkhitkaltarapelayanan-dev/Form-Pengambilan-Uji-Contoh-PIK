@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulir Pengambilan Contoh Uji PIK</title>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#e0e0e0;
+    color:#000;
+    font-family:"Times New Roman", Times, serif;
+    font-size:11pt;
+    line-height:1.25;
+    padding:20px 10px;
+  }
+
+  .sheet{
+    max-width:950px;
+    margin:0 auto;
+    background:#fff;
+    padding:30px 40px;
+    border:1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .form-header {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13pt;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 8px;
+  }
+
+  .sec-title{
+    font-weight:bold;
+    font-size:11pt;
+    margin-top:18px;
+    margin-bottom:8px;
+    background-color: #f2f2f2;
+    padding: 6px 10px;
+    border: 1px solid #000;
+  }
+
+  table.grid-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:10px;
+  }
+  table.grid-table th, table.grid-table td{
+    border:1px solid #000;
+    padding:5px 8px;
+    font-size:10pt;
+    text-align:left;
+    vertical-align:middle;
+  }
+  table.grid-table th{
+    text-align:center;
+    font-weight:bold;
+    background-color:#f9f9f9;
+    vertical-align:middle;
+  }
+  table.grid-table td.center{text-align:center;}
+
+  .label-cell {
+    background-color: #fcfcfc;
+    width: 32%;
+    font-weight: normal;
+  }
+  
+  input[type="text"], input[type="date"], input[type="time"], input[type="number"], select, textarea{
+    border:none;
+    width:100%;
+    padding:3px 2px;
+    font-family:"Times New Roman", Times, serif;
+    font-size:10pt;
+    background:transparent;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 42px;
+    border: 1px solid #bbb;
+    padding: 4px;
+    background: #fff;
+    border-radius: 2px;
+  }
+  input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus{
+    outline:1px solid #333;
+    background-color: #fffff8;
+  }
+  
+  input[type="checkbox"], input[type="radio"] {
+    cursor: pointer;
+    transform: scale(1.1);
+    margin-right: 4px;
+  }
+
+  .inline-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+  .inline-options label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .petugas-list{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .petugas-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .petugas-item span{width:20px; text-align:right; font-weight:bold;}
+
+  /* SAMPLE CARD STYLES FOR SECTION C */
+  .sample-card {
+    border: 1px solid #000;
+    margin-bottom: 16px;
+    background: #fff;
+  }
+  .sample-card-header {
+    background: #e9ecef;
+    padding: 6px 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #000;
+  }
+
+  /* FIELDSET LIKE INLINE INPUTS */
+  .input-group-inline {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .input-field-unit {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff;
+  }
+  .input-field-unit input[type="number"], .input-field-unit input[type="text"] {
+    border: 1px solid #ccc;
+    padding: 2px 5px;
+    border-radius: 2px;
+    background: #fff;
+  }
+
+  #photoList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 12px;
+  }
+
+  .photo-container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width: 200px;
+    border: 1px solid #000;
+    padding: 10px;
+    background: #fafafa;
+  }
+  .photo-box{
+    width:180px;
+    height:180px;
+    border:1px solid #000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    background:#fff;
+    cursor:pointer;
+    flex-shrink: 0;
+  }
+  .photo-box img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:none;
+  }
+  .photo-box.has-img img{display:block;}
+  .photo-box.has-img .photo-hint{display:none;}
+  .photo-hint{
+    font-size:9pt;
+    color:#666;
+    text-align:center;
+    padding:10px;
+  }
+
+  .footer-note{
+    font-size:9.5pt;
+    font-style:italic;
+    margin-top:15px;
+    border-top: 1px solid #aaa;
+    padding-top: 5px;
+  }
+
+  .btn-bar{
+    max-width:950px;
+    margin:15px auto 0;
+    display:flex;
+    gap:8px;
+    justify-content:flex-end;
+  }
+  .btn{
+    padding:8px 16px;
+    font-size:10pt;
+    cursor:pointer;
+    border:1px solid #666;
+    background:#fff;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .btn-primary{
+    background:#333;
+    color:#fff;
+    border-color:#333;
+  }
+  .btn-success{
+    background:#28a745;
+    color:#fff;
+    border-color:#28a745;
+  }
+  .btn-add{
+    background:#17a2b8;
+    color:#fff;
+    border-color:#17a2b8;
+  }
+  .btn-sm{
+    padding:4px 10px;
+    font-size:8.5pt;
+    border-radius: 3px;
+  }
+
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  /* MODAL POPUPS */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+  .draft-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 8px;
+    border-radius: 4px;
+  }
+  .draft-item-info {
+    font-size: 9.5pt;
+  }
+
+  .custom-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .custom-modal-content input[type="text"] {
+    border: 1px solid #aaa;
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+  }
+  .custom-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  /* PAGE BREAK CLASS FOR PRINTING */
+  .page-break {
+    page-break-before: always;
+  }
+
+  /* MEDIA QUERIES FOR MOBILE */
+  @media screen and (max-width: 650px) {
+    body{ padding: 5px; }
+    .sheet{ padding: 15px 10px; }
+    
+    input[type="text"], input[type="date"], input[type="time"], input[type="number"], select{
+      border-bottom: 1px dashed #aaa;
+      padding: 4px;
+      margin-top: 2px;
+    }
+
+    .inline-options {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .photo-container {
+      flex-direction: column;
+    }
+    .photo-box {
+      width: 100%;
+      height: 200px;
+    }
+
+    .btn-bar {
+      flex-direction: column;
+    }
+    .btn {
+      width: 100%;
+    }
+
+    .input-group-inline {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+
+  /* MEDIA QUERIES FOR PRINT */
+  @media print{
+    body{ background:#fff; padding:0; }
+    .sheet{ border:none; padding:0; width:100%; max-width:100%; box-shadow:none; }
+    
+    .btn-bar, .btn-sm, .action-col, th.action-col, td.action-col, .btn-del-row, .modal-overlay, #btnAutoGps {
+      display: none !important;
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+    }
+    
+    table.grid-table { display: table !important; width: 100% !important; }
+    table.grid-table tr { display: table-row !important; }
+    table.grid-table td, table.grid-table th { display: table-cell !important; border: 1px solid #000 !important; }
+    table.grid-table th { background-color:#f2f2f2 !important; }
+    
+    input:not([type="checkbox"]):not([type="radio"]), select, textarea { 
+      border: none !important; 
+      padding: 0 !important; 
+      appearance: none; 
+      -webkit-appearance: none;
+      background: transparent !important;
+    }
+    
+    input[type="checkbox"], input[type="radio"] {
+      appearance: auto !important;
+      -webkit-appearance: auto !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      accent-color: #000 !important;
+      display: inline-block !important;
+      visibility: visible !important;
+      margin-right: 4px;
+      transform: scale(1.1);
+    }
+    textarea { height: auto; min-height: 24px; }
+    
+    .photo-container { 
+      display: inline-flex !important;
+      flex-direction: column !important; 
+      align-items: center !important;
+      page-break-inside: avoid; 
+      background: #fff !important;
+      width: 180px !important;
+      margin-right: 10px !important;
+      margin-bottom: 10px !important;
+    }
+    .photo-box { 
+      width:180px !important; 
+      height:180px !important; 
+      border:1px solid #000 !important; 
+    }
+    .page-break { 
+      page-break-before: always !important; 
+    }
+    .table-responsive { overflow-x: visible !important; }
+    .sample-card { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="form-header">
+    FORMULIR PENGAMBILAN CONTOH UJI PIK
+  </div>
+
+  <!-- BAGIAN A -->
+  <div class="sec-title">A. Identitas Pembudidaya</div>
+  <table class="grid-table">
+    <tr>
+      <td class="label-cell">Nama Pemilik</td>
+      <td><input type="text" id="nama_pemilik" placeholder="Nama Pemilik / Pengelola"></td>
+    </tr>
+    <tr>
+      <td class="label-cell">Alamat Jalan / RT / RW</td>
+      <td><input type="text" id="alamat_pembudidaya" placeholder="Alamat lengkap"></td>
+    </tr>
+    <tr>
+      <td class="label-cell">Desa / Kelurahan</td>
+      <td>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="desa" placeholder="Desa"> / 
+          <input type="text" id="kelurahan" placeholder="Kelurahan">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Kecamatan</td>
+      <td><input type="text" id="kecamatan" placeholder="Kecamatan"></td>
+    </tr>
+    <tr>
+      <td class="label-cell">Kota / Kabupaten</td>
+      <td><input type="text" id="kota_kabupaten" placeholder="Kota / Kabupaten"></td>
+    </tr>
+    <tr>
+      <td class="label-cell">Provinsi</td>
+      <td><input type="text" id="provinsi" placeholder="Provinsi"></td>
+    </tr>
+    <tr>
+      <td class="label-cell">
+        Koordinat (GPS)
+        <button type="button" class="btn btn-sm action-col" id="btnAutoGps" style="margin-top:2px;">📍 Ambil GPS</button>
+      </td>
+      <td>
+        <div style="display:flex; gap:15px; flex-wrap:wrap;">
+          <div style="flex:1; min-width:140px;">
+            S / Lat: <input type="text" id="koordinat_lat" placeholder="-">
+          </div>
+          <div style="flex:1; min-width:140px;">
+            E / Long: <input type="text" id="koordinat_long" placeholder="-">
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- BAGIAN B -->
+  <div class="sec-title">B. Deskripsi Lokasi Budidaya</div>
+  <table class="grid-table">
+    <tr>
+      <td class="label-cell">Sistem Budidaya</td>
+      <td>
+        <div class="inline-options">
+          <label><input type="radio" name="sistem_budidaya" value="Super Intensif"> Super Intensif</label>
+          <label><input type="radio" name="sistem_budidaya" value="Intensif"> Intensif</label>
+          <label><input type="radio" name="sistem_budidaya" value="Semi Intensif"> Semi Intensif</label>
+          <label><input type="radio" name="sistem_budidaya" value="Tradisional"> Tradisional</label>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Luas Lokasi Budidaya</td>
+      <td>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <input type="number" id="luas_lokasi" style="width:120px;"> m²
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Sertifikat Usaha CBIB / CKIB</td>
+      <td>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div class="inline-options">
+            <label><input type="radio" name="ada_sertifikat" value="CBIB"> CBIB</label>
+            <label><input type="radio" name="ada_sertifikat" value="CKIB"> CKIB</label>
+            <label><input type="radio" name="ada_sertifikat" value="Tidak Ada"> Tidak Ada</label>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
+            <span>Nomor Sertifikat:</span>
+            <input type="text" id="no_sertifikat" placeholder="Isi jika ada sertifikat">
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Jenis Budidaya & Wadah</td>
+      <td>
+        <table class="grid-table" style="margin:0;">
+          <tr>
+            <td style="width:130px;"><strong>Pembenihan</strong></td>
+            <td>
+              <div class="inline-options">
+                <label><input type="checkbox" id="pembenihan_tawar"> Air Tawar</label>
+                <label><input type="checkbox" id="pembenihan_payau"> Air Payau</label>
+                <label><input type="checkbox" id="pembenihan_laut"> Laut</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Pembesaran</strong></td>
+            <td>
+              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:6px;">
+                <div>Kolam Air Tenang: <input type="number" id="pembesaran_kat" style="width:70px;"> m²</div>
+                <div>Kolam Air Deras: <input type="number" id="pembesaran_kad" style="width:70px;"> m²</div>
+                <div>Tambak: <input type="number" id="pembesaran_tambak" style="width:70px;"> m²</div>
+                <div>KJA: <input type="number" id="pembesaran_kja" style="width:70px;"> m²</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Pengepul</strong></td>
+            <td>
+              Kolam: <input type="number" id="pengepul_kolam" style="width:80px;"> m²
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Padat Tebar</td>
+      <td>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <input type="number" id="padat_tebar" style="width:120px;"> ekor / m²
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Umur Pemeliharaan</td>
+      <td>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <input type="number" id="umur_pemeliharaan" style="width:120px;"> Bulan
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Jumlah Populasi</td>
+      <td>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <input type="number" id="jumlah_populasi" style="width:120px;"> Ekor
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Tingkat Kematian</td>
+      <td>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <input type="number" id="tingkat_kematian" step="0.1" style="width:120px;"> %
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Kualitas Air</td>
+      <td>
+        <div class="table-responsive">
+          <table class="grid-table" style="margin:0; text-align:center;">
+            <thead>
+              <tr>
+                <th>Suhu (°C)</th>
+                <th>Kedalaman (Cm)</th>
+                <th>Kecerahan (Cm)</th>
+                <th>Salinitas (Ppt)</th>
+                <th>Oksigen (Ppm)</th>
+                <th>pH</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="number" id="qa_suhu" step="0.1" class="center"></td>
+                <td><input type="number" id="qa_kedalaman" step="0.1" class="center"></td>
+                <td><input type="number" id="qa_kecerahan" step="0.1" class="center"></td>
+                <td><input type="number" id="qa_salinitas" step="0.1" class="center"></td>
+                <td><input type="number" id="qa_oksigen" step="0.1" class="center"></td>
+                <td><input type="number" id="qa_ph" step="0.1" class="center"></td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="grid-table" style="margin-top:6px; text-align:center;">
+            <thead>
+              <tr>
+                <th>Alkalinitas (Ppm)</th>
+                <th>Kesadahan (dH)</th>
+                <th>Amonia (Ppm)</th>
+                <th>H2S (Ppm)</th>
+                <th>Nitrat (Ppm)</th>
+                <th>Nitrit (Ppm)</th>
+                <th>Phosphat (Ppm)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="number" id="qa_alkalinitas" step="0.01" class="center"></td>
+                <td><input type="number" id="qa_kesadahan" step="0.01" class="center"></td>
+                <td><input type="number" id="qa_amonia" step="0.01" class="center"></td>
+                <td><input type="number" id="qa_h2s" step="0.01" class="center"></td>
+                <td><input type="number" id="qa_nitrat" step="0.01" class="center"></td>
+                <td><input type="number" id="qa_nitrit" step="0.01" class="center"></td>
+                <td><input type="number" id="qa_phosphat" step="0.01" class="center"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Potensi Sumber Penyakit Sekitar Usaha</td>
+      <td>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div class="inline-options">
+            <label><input type="radio" name="potensi_penyakit" value="Ya" id="potensi_ya"> Ya</label>
+            <label><input type="radio" name="potensi_penyakit" value="Tidak" id="potensi_tidak" checked> Tidak</label>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span>Sebutkan (jika Ya):</span>
+            <input type="text" id="potensi_penyakit_ket" placeholder="Keterangan sumber penyakit">
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Kerugian Ekonomi dan Fisik</td>
+      <td>
+        <textarea id="kerugian_ekonomi_fisik" placeholder="Deskripsi kerugian fisik atau finansial jika ada..."></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Upaya Pengendalian</td>
+      <td>
+        <textarea id="upaya_pengendalian" placeholder="Upaya pencegahan / pengobatan yang telah dilakukan..."></textarea>
+      </td>
+    </tr>
+  </table>
+
+  <!-- BAGIAN C -->
+  <div class="sec-title">C. Deskripsi Contoh Uji</div>
+  
+  <!-- IMPUT TANGGAL & WAKTU PENGAMBILAN DIBUAT DENGAN TABEL RAPI -->
+  <table class="grid-table" style="margin-bottom:14px;">
+    <tr>
+      <td class="label-cell">Tanggal Pengambilan Contoh Uji</td>
+      <td><input type="date" id="tgl_pengambilan"></td>
+    </tr>
+    <tr>
+      <td class="label-cell">Waktu & Musim / Cuaca</td>
+      <td>
+        <div style="display:flex; gap:25px; align-items:center; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span>Jam:</span> 
+            <input type="time" id="waktu_pengambilan" style="width:130px; border:1px solid #ccc; padding:2px 5px; background:#fff;">
+          </div>
+          <div class="inline-options">
+            <span>Musim:</span>
+            <label><input type="radio" name="musim" value="Penghujan"> Penghujan</label>
+            <label><input type="radio" name="musim" value="Kemarau"> Kemarau</label>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- DYNAMIC SAMPLE CARDS CONTAINER -->
+  <div id="contohUjiContainer"></div>
+  
+  <div style="margin-bottom:20px;">
+    <button type="button" class="btn btn-add btn-sm action-col" id="btnAddContohUji" style="font-weight:bold; padding:6px 12px;">
+      + Tambah Jenis Contoh Uji
+    </button>
+  </div>
+
+  <!-- BAGIAN D -->
+  <div class="sec-title">D. Identitas Pengambil Contoh Uji</div>
+  <table class="grid-table">
+    <tr>
+      <td class="label-cell" style="vertical-align:top;">Nama Petugas / Tim Pengambil Contoh Uji</td>
+      <td>
+        <div class="petugas-list" id="petugasContainer"></div>
+        <button type="button" class="btn btn-sm action-col" id="btnAddPetugas" style="margin-top:8px;">+ Tambah Petugas</button>
+      </td>
+    </tr>
+  </table>
+
+  <!-- BAGIAN E -->
+  <div class="sec-title page-break">E. Foto Dokumentasi</div>
+  <div id="photoList"></div>
+  <button type="button" class="btn btn-sm action-col btn-add" id="btnAddPhoto" style="margin-bottom: 10px; font-weight:bold; padding:6px 12px;">+ Upload Foto Dokumentasi</button>
+
+  <div class="footer-note">
+    Keterangan: (*) Pilih / coret yang tidak sesuai.<br>
+    <small style="color:#555;">Dokumen ini diterbitkan untuk acuan laboratorium pengujian kesehatan ikan dan lingkungan.</small>
+  </div>
+
+</div>
+
+<!-- CONTROLS BAR -->
+<div class="btn-bar">
+  <button type="button" class="btn btn-success" id="btnOpenDrafts">📁 Lihat / Buka Draf</button>
+  <button type="button" class="btn" id="btnSave">💾 Simpan Draf Baru</button>
+  <button type="button" class="btn btn-primary" onclick="window.print()">Cetak / Simpan PDF</button>
+</div>
+
+<!-- MODAL BUKA DRAF -->
+<div class="modal-overlay" id="draftModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 style="margin:0; font-size:11pt;">Daftar Draf Contoh Uji Tersimpan</h3>
+      <button type="button" id="btnCloseModal" style="cursor:pointer; background:none; border:none; font-size:16px; font-weight:bold;">✕</button>
+    </div>
+    <div id="draftListContainer"></div>
+  </div>
+</div>
+
+<!-- CUSTOM PROMPT / NOTIFICATION MODAL -->
+<div class="modal-overlay" id="customModal">
+  <div class="modal-box" style="max-width: 400px;">
+    <div class="modal-header">
+      <h3 id="customModalTitle" style="margin:0; font-size:11pt;">Informasi</h3>
+      <button type="button" id="customModalCloseX" style="cursor:pointer; background:none; border:none; font-size:16px; font-weight:bold;">✕</button>
+    </div>
+    <div id="customModalBody" class="custom-modal-content">
+      <!-- Diisi dinamis -->
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // INDEXEDDB SETUP
+  const DB_NAME = 'PengambilanSampleDB';
+  const DB_VERSION = 1;
+  const STORE_NAME = 'sampel_drafts';
+
+  function openDB() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result);
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+        }
+      };
+    });
+  }
+
+  async function dbSaveDraft(draft) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readwrite');
+      const store = tx.objectStore(STORE_NAME);
+      store.put(draft);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+
+  async function dbGetAllDrafts() {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const request = store.getAll();
+      request.onsuccess = () => {
+        const results = request.result || [];
+        results.sort((a, b) => b.rawTime - a.rawTime);
+        resolve(results);
+      };
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async function dbDeleteDraft(id) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readwrite');
+      const store = tx.objectStore(STORE_NAME);
+      store.delete(id);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+
+  // CUSTOM MODAL DIALOGS
+  function showCustomAlert(title, message, callback){
+    const modal = document.getElementById('customModal');
+    document.getElementById('customModalTitle').textContent = title;
+    const body = document.getElementById('customModalBody');
+    body.innerHTML = `
+      <p style="margin:0 0 15px 0;">${message}</p>
+      <div class="custom-modal-buttons">
+        <button type="button" class="btn btn-primary btn-sm" id="alertOkBtn">OK</button>
+      </div>
+    `;
+    modal.style.display = 'flex';
+    document.getElementById('alertOkBtn').onclick = () => {
+      modal.style.display = 'none';
+      if(callback) callback();
+    };
+    document.getElementById('customModalCloseX').onclick = () => {
+      modal.style.display = 'none';
+      if(callback) callback();
+    };
+  }
+
+  function showCustomConfirm(title, message, onYes, onNo){
+    const modal = document.getElementById('customModal');
+    document.getElementById('customModalTitle').textContent = title;
+    const body = document.getElementById('customModalBody');
+    body.innerHTML = `
+      <p style="margin:0 0 15px 0;">${message}</p>
+      <div class="custom-modal-buttons">
+        <button type="button" class="btn btn-sm" id="confirmNoBtn">Batal</button>
+        <button type="button" class="btn btn-primary btn-sm" id="confirmYesBtn">Ya</button>
+      </div>
+    `;
+    modal.style.display = 'flex';
+    document.getElementById('confirmYesBtn').onclick = () => {
+      modal.style.display = 'none';
+      if(onYes) onYes();
+    };
+    document.getElementById('confirmNoBtn').onclick = () => {
+      modal.style.display = 'none';
+      if(onNo) onNo();
+    };
+    document.getElementById('customModalCloseX').onclick = () => {
+      modal.style.display = 'none';
+      if(onNo) onNo();
+    };
+  }
+
+  function showCustomPrompt(title, defaultValue, onOk){
+    const modal = document.getElementById('customModal');
+    document.getElementById('customModalTitle').textContent = title;
+    const body = document.getElementById('customModalBody');
+    body.innerHTML = `
+      <input type="text" id="promptInputVal" value="${defaultValue}">
+      <div class="custom-modal-buttons">
+        <button type="button" class="btn btn-sm" id="promptCancelBtn">Batal</button>
+        <button type="button" class="btn btn-primary btn-sm" id="promptOkBtn">Simpan</button>
+      </div>
+    `;
+    modal.style.display = 'flex';
+    const inputEl = document.getElementById('promptInputVal');
+    inputEl.focus();
+    inputEl.select();
+
+    document.getElementById('promptOkBtn').onclick = () => {
+      const val = inputEl.value;
+      modal.style.display = 'none';
+      if(onOk) onOk(val);
+    };
+    document.getElementById('promptCancelBtn').onclick = () => {
+      modal.style.display = 'none';
+    };
+    document.getElementById('customModalCloseX').onclick = () => {
+      modal.style.display = 'none';
+    };
+  }
+
+  // PETUGAS DYNAMIC LIST
+  const petugasContainer = document.getElementById('petugasContainer');
+  function addPetugas(val = ''){
+    const idx = petugasContainer.children.length + 1;
+    const div = document.createElement('div');
+    div.className = 'petugas-item';
+    div.innerHTML = `
+      <span>${idx}.</span>
+      <input type="text" class="inp-petugas" value="${val}" placeholder="Nama Petugas ${idx}" style="border:1px solid #ccc; padding:3px 6px; border-radius:2px;">
+      <button type="button" class="btn-sm action-col btn-del-row" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">✕</button>
+    `;
+    div.querySelector('button').onclick = () => { div.remove(); renumberPetugas(); };
+    petugasContainer.appendChild(div);
+  }
+  function renumberPetugas(){
+    Array.from(petugasContainer.children).forEach((el, i) => {
+      el.querySelector('span').textContent = (i + 1) + '.';
+    });
+  }
+  document.getElementById('btnAddPetugas').onclick = () => addPetugas();
+
+  const contohUjiContainer = document.getElementById('contohUjiContainer');
+  function addContohUji(data = {}){
+    const cardId = 'cu_item_' + Date.now() + Math.random().toString(36).substr(2,4);
+    const radioName = 'asal_contoh_uji_' + cardId;
+    const card = document.createElement('div');
+    card.className = 'sample-card';
+    card.innerHTML = `
+      <div class="sample-card-header">
+        <span class="cu-title-label">Jenis Contoh Uji</span>
+        <button type="button" class="btn-sm action-col btn-del-row" style="color:#d9534f; border:1px solid #d9534f; background:#fff; cursor:pointer; font-weight:bold;" onclick="this.closest('.sample-card').remove(); renumberContohUji();">Hapus Jenis Ini</button>
+      </div>
+      <table class="grid-table" style="margin:0;">
+        <tr>
+          <td class="label-cell">Kode Contoh Uji</td>
+          <td><input type="text" class="cu-kode" value="${data.kode||''}" placeholder="Misal: CU-2026/09/001"></td>
+        </tr>
+        <tr>
+          <td class="label-cell">Jenis Contoh Uji (Umum / Latin)</td>
+          <td><input type="text" class="cu-jenis" value="${data.jenis||''}" placeholder="Contoh: Ikan Nila (Oreochromis niloticus)"></td>
+        </tr>
+        <tr>
+          <td class="label-cell">Asal Contoh Uji</td>
+          <td>
+            <div class="inline-options">
+              <label><input type="radio" name="${radioName}" value="Alam" ${data.asal==='Alam'?'checked':''}> Alam</label>
+              <label><input type="radio" name="${radioName}" value="Budidaya" ${data.asal==='Budidaya'||!data.asal?'checked':''}> Budidaya</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Lokasi Pengambilan Contoh Uji</td>
+          <td><input type="text" class="cu-lokasi" value="${data.lokasi||''}" placeholder="Spesifik lokasi / nomor kolam / petakan"></td>
+        </tr>
+        <tr>
+          <td class="label-cell">Jumlah Contoh Uji</td>
+          <td>
+            <div class="input-group-inline">
+              <div class="input-field-unit">
+                <span>Hidup:</span> 
+                <input type="number" class="cu-hidup" value="${data.jumlah_hidup||''}" style="width:70px;"> <span>Ekor</span>
+              </div>
+              <div class="input-field-unit">
+                <span>Mati:</span> 
+                <input type="number" class="cu-mati" value="${data.jumlah_mati||''}" style="width:70px;"> <span>Ekor</span>
+              </div>
+              <div class="input-field-unit">
+                <span>Fiksatif:</span> 
+                <input type="text" class="cu-fiksatif" value="${data.fiksatif||''}" style="width:110px;" placeholder="Jenis/Larutan">
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Ukuran Contoh Uji</td>
+          <td>
+            <div class="input-group-inline">
+              <div class="input-field-unit">
+                <span>Panjang:</span> 
+                <input type="number" class="cu-panjang" value="${data.ukuran_panjang||''}" step="0.1" style="width:80px;"> <span>Cm</span>
+              </div>
+              <div class="input-field-unit">
+                <span>Berat:</span> 
+                <input type="number" class="cu-berat" value="${data.ukuran_berat||''}" step="0.1" style="width:80px;"> <span>Gram</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Gejala Klinis</td>
+          <td><textarea class="cu-gejala" placeholder="Deskripsi kelainan fisik / tingkah laku contoh uji...">${data.gejala_klinis||''}</textarea></td>
+        </tr>
+        <tr>
+          <td class="label-cell">Target Penyakit</td>
+          <td><input type="text" class="cu-target" value="${data.target_penyakit||''}" placeholder="Target parasit / bakteri / virus..."></td>
+        </tr>
+        <tr>
+          <td class="label-cell">Anamnesa</td>
+          <td><textarea class="cu-anamnesa" placeholder="Riwayat pakan, kematian, atau perlakuan obat sebelumnya...">${data.anamnesa||''}</textarea></td>
+        </tr>
+      </table>
+    `;
+    contohUjiContainer.appendChild(card);
+    renumberContohUji();
+  }
+
+  function renumberContohUji(){
+    Array.from(contohUjiContainer.querySelectorAll('.sample-card')).forEach((card, i) => {
+      card.querySelector('.cu-title-label').textContent = `Jenis Contoh Uji #${i + 1}`;
+    });
+  }
+  document.getElementById('btnAddContohUji').onclick = () => addContohUji();
+
+  const photoList = document.getElementById('photoList');
+  function addPhotoBlock(data = {}){
+    const id = 'img_input_' + Date.now() + Math.random().toString(36).substr(2,4);
+    const div = document.createElement('div');
+    div.className = 'photo-container';
+    div.innerHTML = `
+      <input type="file" accept="image/*" id="${id}" style="display:none;">
+      <label for="${id}" class="photo-box ${data.img?'has-img':''}">
+        <span class="photo-hint">+ Klik Upload Foto</span>
+        <img src="${data.img||''}" alt="Foto Dokumentasi">
+      </label>
+      <button type="button" class="btn-sm action-col btn-del-row" style="color:red; margin-top:6px; width:100%; border:1px solid red; background:#fff; cursor:pointer;" onclick="this.closest('.photo-container').remove()">Hapus Foto</button>
+    `;
+
+    const fileInp = div.querySelector(`#${id}`);
+    const box = div.querySelector('.photo-box');
+    const img = div.querySelector('img');
+
+    fileInp.onchange = (e) => {
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          img.src = ev.target.result;
+          box.classList.add('has-img');
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    photoList.appendChild(div);
+  }
+  document.getElementById('btnAddPhoto').onclick = () => addPhotoBlock();
+
+  // GPS GEOLOCATION
+  document.getElementById('btnAutoGps').onclick = () => {
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(pos => {
+        document.getElementById('koordinat_lat').value = pos.coords.latitude.toFixed(6);
+        document.getElementById('koordinat_long').value = pos.coords.longitude.toFixed(6);
+      }, () => showCustomAlert('Peringatan', 'Gagal membaca lokasi GPS. Pastikan izin lokasi diaktifkan.'));
+    } else {
+      showCustomAlert('Informasi', 'Browser Anda tidak mendukung fitur Geolocation.');
+    }
+  };
+
+  // HELPER RADIO
+  function getRadioValue(name){
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '';
+  }
+  function setRadioValue(name, val){
+    const el = document.querySelector(`input[name="${name}"][value="${val}"]`);
+    if(el) el.checked = true;
+  }
+
+  document.getElementById('btnSave').onclick = () => {
+    const pemilik = document.getElementById('nama_pemilik').value.trim();
+    const tgl = document.getElementById('tgl_pengambilan').value;
+    const defaultTitle = pemilik ? `Sampel: ${pemilik} (${tgl||'Tanpa Tgl'})` : `Draf Sampel ${new Date().toLocaleString('id-ID')}`;
+
+    showCustomPrompt("Masukkan nama / judul draf ini:", defaultTitle, async (draftTitle) => {
+      if(draftTitle === null || draftTitle.trim() === '') return;
+
+      const currentDraft = {
+        id: 'sample_draft_' + Date.now(),
+        title: draftTitle,
+        timestamp: new Date().toLocaleString('id-ID'),
+        rawTime: Date.now(),
+        data: {
+          // A
+          nama_pemilik: document.getElementById('nama_pemilik').value,
+          alamat_pembudidaya: document.getElementById('alamat_pembudidaya').value,
+          desa: document.getElementById('desa').value,
+          kelurahan: document.getElementById('kelurahan').value,
+          kecamatan: document.getElementById('kecamatan').value,
+          kota_kabupaten: document.getElementById('kota_kabupaten').value,
+          provinsi: document.getElementById('provinsi').value,
+          koordinat_lat: document.getElementById('koordinat_lat').value,
+          koordinat_long: document.getElementById('koordinat_long').value,
+          // B
+          sistem_budidaya: getRadioValue('sistem_budidaya'),
+          luas_lokasi: document.getElementById('luas_lokasi').value,
+          ada_sertifikat: getRadioValue('ada_sertifikat'),
+          no_sertifikat: document.getElementById('no_sertifikat').value,
+          pembenihan_tawar: document.getElementById('pembenihan_tawar').checked,
+          pembenihan_payau: document.getElementById('pembenihan_payau').checked,
+          pembenihan_laut: document.getElementById('pembenihan_laut').checked,
+          pembesaran_kat: document.getElementById('pembesaran_kat').value,
+          pembesaran_kad: document.getElementById('pembesaran_kad').value,
+          pembesaran_tambak: document.getElementById('pembesaran_tambak').value,
+          pembesaran_kja: document.getElementById('pembesaran_kja').value,
+          pengepul_kolam: document.getElementById('pengepul_kolam').value,
+          padat_tebar: document.getElementById('padat_tebar').value,
+          umur_pemeliharaan: document.getElementById('umur_pemeliharaan').value,
+          jumlah_populasi: document.getElementById('jumlah_populasi').value,
+          tingkat_kematian: document.getElementById('tingkat_kematian').value,
+          // Water Quality
+          qa_suhu: document.getElementById('qa_suhu').value,
+          qa_kedalaman: document.getElementById('qa_kedalaman').value,
+          qa_kecerahan: document.getElementById('qa_kecerahan').value,
+          qa_salinitas: document.getElementById('qa_salinitas').value,
+          qa_oksigen: document.getElementById('qa_oksigen').value,
+          qa_ph: document.getElementById('qa_ph').value,
+          qa_alkalinitas: document.getElementById('qa_alkalinitas').value,
+          qa_kesadahan: document.getElementById('qa_kesadahan').value,
+          qa_amonia: document.getElementById('qa_amonia').value,
+          qa_h2s: document.getElementById('qa_h2s').value,
+          qa_nitrat: document.getElementById('qa_nitrat').value,
+          qa_nitrit: document.getElementById('qa_nitrit').value,
+          qa_phosphat: document.getElementById('qa_phosphat').value,
+          potensi_penyakit: getRadioValue('potensi_penyakit'),
+          potensi_penyakit_ket: document.getElementById('potensi_penyakit_ket').value,
+          kerugian_ekonomi_fisik: document.getElementById('kerugian_ekonomi_fisik').value,
+          upaya_pengendalian: document.getElementById('upaya_pengendalian').value,
+          // C General
+          tgl_pengambilan: document.getElementById('tgl_pengambilan').value,
+          waktu_pengambilan: document.getElementById('waktu_pengambilan').value,
+          musim: getRadioValue('musim'),
+          // C Dynamic Array
+          contoh_uji: Array.from(contohUjiContainer.querySelectorAll('.sample-card')).map(card => {
+            const radChecked = card.querySelector('input[type="radio"]:checked');
+            return {
+              kode: card.querySelector('.cu-kode').value,
+              jenis: card.querySelector('.cu-jenis').value,
+              asal: radChecked ? radChecked.value : '',
+              lokasi: card.querySelector('.cu-lokasi').value,
+              jumlah_hidup: card.querySelector('.cu-hidup').value,
+              jumlah_mati: card.querySelector('.cu-mati').value,
+              fiksatif: card.querySelector('.cu-fiksatif').value,
+              ukuran_panjang: card.querySelector('.cu-panjang').value,
+              ukuran_berat: card.querySelector('.cu-berat').value,
+              gejala_klinis: card.querySelector('.cu-gejala').value,
+              target_penyakit: card.querySelector('.cu-target').value,
+              anamnesa: card.querySelector('.cu-anamnesa').value
+            };
+          }),
+          // D
+          petugas: Array.from(document.querySelectorAll('.inp-petugas')).map(i => i.value),
+          // E Dynamic Photos
+          photos: Array.from(photoList.children).map(div => ({
+            img: div.querySelector('img').src
+          }))
+        }
+      };
+
+      try {
+        await dbSaveDraft(currentDraft);
+        showCustomAlert('Berhasil', 'Draf formulir berhasil disimpan.');
+      } catch(e) {
+        showCustomAlert('Gagal', 'Gagal menyimpan draf: ' + e.message);
+      }
+    });
+  };
+
+  // OPEN DRAFTS MODAL
+  const modal = document.getElementById('draftModal');
+  document.getElementById('btnOpenDrafts').onclick = async () => {
+    await renderDraftList();
+    modal.style.display = 'flex';
+  };
+  document.getElementById('btnCloseModal').onclick = () => {
+    modal.style.display = 'none';
+  };
+
+  async function renderDraftList(){
+    const container = document.getElementById('draftListContainer');
+    container.innerHTML = '<p style="text-align:center; color:#666;">Memuat draf...</p>';
+    
+    try {
+      const drafts = await dbGetAllDrafts();
+      container.innerHTML = '';
+
+      if(drafts.length === 0){
+        container.innerHTML = '<p style="text-align:center; color:#666;">Belum ada draf tersimpan.</p>';
+        return;
+      }
+
+      drafts.forEach((item) => {
+        const div = document.createElement('div');
+        div.className = 'draft-item';
+        div.innerHTML = `
+          <div class="draft-item-info">
+            <strong>${item.title}</strong><br>
+            <small style="color:#666;">Disimpan: ${item.timestamp}</small>
+          </div>
+          <div>
+            <button type="button" class="btn btn-sm btn-success btn-load" data-id="${item.id}">Buka</button>
+            <button type="button" class="btn btn-sm btn-del" data-id="${item.id}" style="color:red; border-color:red;">Hapus</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      container.querySelectorAll('.btn-load').forEach(btn => {
+        btn.onclick = async (e) => {
+          const id = e.target.getAttribute('data-id');
+          const drafts = await dbGetAllDrafts();
+          const target = drafts.find(d => d.id === id);
+          if(target){
+            loadDataToForm(target.data);
+            modal.style.display = 'none';
+            showCustomAlert('Berhasil', `Draf "${target.title}" berhasil dimuat.`);
+          }
+        };
+      });
+
+      container.querySelectorAll('.btn-del').forEach(btn => {
+        btn.onclick = (e) => {
+          const id = e.target.getAttribute('data-id');
+          showCustomConfirm('Konfirmasi', 'Hapus draf ini?', async () => {
+            await dbDeleteDraft(id);
+            renderDraftList();
+          });
+        };
+      });
+    } catch(err) {
+      container.innerHTML = '<p style="text-align:center; color:red;">Gagal memuat draf.</p>';
+    }
+  }
+
+  function loadDataToForm(data){
+    document.getElementById('nama_pemilik').value = data.nama_pemilik || '';
+    document.getElementById('alamat_pembudidaya').value = data.alamat_pembudidaya || '';
+    document.getElementById('desa').value = data.desa || '';
+    document.getElementById('kelurahan').value = data.kelurahan || '';
+    document.getElementById('kecamatan').value = data.kecamatan || '';
+    document.getElementById('kota_kabupaten').value = data.kota_kabupaten || '';
+    document.getElementById('provinsi').value = data.provinsi || '';
+    document.getElementById('koordinat_lat').value = data.koordinat_lat || '';
+    document.getElementById('koordinat_long').value = data.koordinat_long || '';
+
+    setRadioValue('sistem_budidaya', data.sistem_budidaya || '');
+    document.getElementById('luas_lokasi').value = data.luas_lokasi || '';
+    setRadioValue('ada_sertifikat', data.ada_sertifikat || '');
+    document.getElementById('no_sertifikat').value = data.no_sertifikat || '';
+
+    document.getElementById('pembenihan_tawar').checked = !!data.pembenihan_tawar;
+    document.getElementById('pembenihan_payau').checked = !!data.pembenihan_payau;
+    document.getElementById('pembenihan_laut').checked = !!data.pembenihan_laut;
+
+    document.getElementById('pembesaran_kat').value = data.pembesaran_kat || '';
+    document.getElementById('pembesaran_kad').value = data.pembesaran_kad || '';
+    document.getElementById('pembesaran_tambak').value = data.pembesaran_tambak || '';
+    document.getElementById('pembesaran_kja').value = data.pembesaran_kja || '';
+    document.getElementById('pengepul_kolam').value = data.pengepul_kolam || '';
+
+    document.getElementById('padat_tebar').value = data.padat_tebar || '';
+    document.getElementById('umur_pemeliharaan').value = data.umur_pemeliharaan || '';
+    document.getElementById('jumlah_populasi').value = data.jumlah_populasi || '';
+    document.getElementById('tingkat_kematian').value = data.tingkat_kematian || '';
+
+    document.getElementById('qa_suhu').value = data.qa_suhu || '';
+    document.getElementById('qa_kedalaman').value = data.qa_kedalaman || '';
+    document.getElementById('qa_kecerahan').value = data.qa_kecerahan || '';
+    document.getElementById('qa_salinitas').value = data.qa_salinitas || '';
+    document.getElementById('qa_oksigen').value = data.qa_oksigen || '';
+    document.getElementById('qa_ph').value = data.qa_ph || '';
+    document.getElementById('qa_alkalinitas').value = data.qa_alkalinitas || '';
+    document.getElementById('qa_kesadahan').value = data.qa_kesadahan || '';
+    document.getElementById('qa_amonia').value = data.qa_amonia || '';
+    document.getElementById('qa_h2s').value = data.qa_h2s || '';
+    document.getElementById('qa_nitrat').value = data.qa_nitrat || '';
+    document.getElementById('qa_nitrit').value = data.qa_nitrit || '';
+    document.getElementById('qa_phosphat').value = data.qa_phosphat || '';
+
+    setRadioValue('potensi_penyakit', data.potensi_penyakit || 'Tidak');
+    document.getElementById('potensi_penyakit_ket').value = data.potensi_penyakit_ket || '';
+    document.getElementById('kerugian_ekonomi_fisik').value = data.kerugian_ekonomi_fisik || '';
+    document.getElementById('upaya_pengendalian').value = data.upaya_pengendalian || '';
+
+    document.getElementById('tgl_pengambilan').value = data.tgl_pengambilan || '';
+    document.getElementById('waktu_pengambilan').value = data.waktu_pengambilan || '';
+    setRadioValue('musim', data.musim || '');
+
+    // Restore Contoh Uji list
+    contohUjiContainer.innerHTML = '';
+    if(data.contoh_uji && data.contoh_uji.length > 0){
+      data.contoh_uji.forEach(cu => addContohUji(cu));
+    } else {
+      addContohUji();
+    }
+
+    // Restore Petugas list
+    petugasContainer.innerHTML = '';
+    if(data.petugas && data.petugas.length > 0){
+      data.petugas.forEach(p => addPetugas(p));
+    } else {
+      for(let i=0; i<3; i++) addPetugas();
+    }
+
+    // Restore Photos list
+    photoList.innerHTML = '';
+    if(data.photos && data.photos.length > 0){
+      data.photos.forEach(ph => addPhotoBlock(ph));
+    } else {
+      addPhotoBlock();
+    }
+  }
+
+  // Initializing default empty fields
+  addContohUji();
+  for(let i=0; i<3; i++) addPetugas();
+  addPhotoBlock();
+
+})();
+</script>
+
+</body>
+</html>
