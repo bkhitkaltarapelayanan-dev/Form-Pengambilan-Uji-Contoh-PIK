@@ -246,6 +246,25 @@
     border-radius: 3px;
   }
 
+  /* TARGET PENYAKIT SHORTCUT BADGES */
+  .target-badge {
+    display: inline-block;
+    background: #e0f2fe;
+    border: 1px solid #7dd3fc;
+    color: #0369a1;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 8.5pt;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  .target-badge:hover {
+    background: #0284c7;
+    color: #ffffff;
+    border-color: #0284c7;
+  }
+
   .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -760,6 +779,15 @@
   const DB_VERSION = 1;
   const STORE_NAME = 'sampel_drafts';
 
+  const SPECIES_TARGETS = {
+    'Nila (Oreochromis niloticus)': ['VNN', 'EUS', 'E. Ictaluri'],
+    'Mas (Cyprinus carpio)': ['SVCV', 'E. Ictaluri'],
+    'Lele (Clarias batrachus)': ['EUS', 'E. Ictaluri'],
+    'Patin (Pangasius spp.)': ['E. Ictaluri'],
+    'Udang Windu (Penaeus monodon)': ['WSSV', 'IMNV', 'IHHNV', 'AHPND'],
+    'Bandeng (Chanos chanos)': ['VNN']
+  };
+
   function openDB() {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -927,7 +955,21 @@
         </tr>
         <tr>
           <td class="label-cell">Jenis Contoh Uji (Umum / Latin)</td>
-          <td><input type="text" class="cu-jenis" value="${data.jenis||''}" placeholder="Contoh: Ikan Nila (Oreochromis niloticus)"></td>
+          <td>
+            <div style="display:flex; flex-direction:column; gap:5px;">
+              <select class="cu-jenis-select action-col" style="border:1px solid #ccc; padding:4px; background:#fff; font-size:9.5pt;">
+                <option value="">-- Pilih Jenis Contoh Uji (Preset) --</option>
+                <option value="Nila (Oreochromis niloticus)">Nila (Oreochromis niloticus)</option>
+                <option value="Mas (Cyprinus carpio)">Mas (Cyprinus carpio)</option>
+                <option value="Lele (Clarias batrachus)">Lele (Clarias batrachus)</option>
+                <option value="Patin (Pangasius spp.)">Patin (Pangasius spp.)</option>
+                <option value="Udang Windu (Penaeus monodon)">Udang Windu (Penaeus monodon)</option>
+                <option value="Bandeng (Chanos chanos)">Bandeng (Chanos chanos)</option>
+                <option value="Lainnya">Lainnya / Input Manual...</option>
+              </select>
+              <input type="text" class="cu-jenis" value="${data.jenis||''}" placeholder="Atau ketik nama jenis contoh uji secara manual">
+            </div>
+          </td>
         </tr>
         <tr>
           <td class="label-cell">Asal Contoh Uji</td>
@@ -982,7 +1024,10 @@
         </tr>
         <tr>
           <td class="label-cell">Target Penyakit</td>
-          <td><input type="text" class="cu-target" value="${data.target_penyakit||''}" placeholder="Target parasit / bakteri / virus..."></td>
+          <td>
+            <input type="text" class="cu-target" value="${data.target_penyakit||''}" placeholder="Target parasit / bakteri / virus...">
+            <div class="cu-target-shortcuts action-col" style="display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; align-items:center;"></div>
+          </td>
         </tr>
         <tr>
           <td class="label-cell">Anamnesa</td>
@@ -991,6 +1036,64 @@
       </table>
     `;
     contohUjiContainer.appendChild(card);
+
+    const jenisSelect = card.querySelector('.cu-jenis-select');
+    const jenisInput = card.querySelector('.cu-jenis');
+    const targetInput = card.querySelector('.cu-target');
+    const shortcutsContainer = card.querySelector('.cu-target-shortcuts');
+
+    function renderShortcuts(targetsArray) {
+      shortcutsContainer.innerHTML = '';
+      if (!targetsArray || targetsArray.length === 0) return;
+
+      const label = document.createElement('span');
+      label.style.fontSize = '8.5pt';
+      label.style.color = '#555';
+      label.style.fontWeight = 'bold';
+      label.textContent = 'Shortcut +Target: ';
+      shortcutsContainer.appendChild(label);
+
+      targetsArray.forEach(target => {
+        const badge = document.createElement('button');
+        badge.type = 'button';
+        badge.className = 'target-badge action-col';
+        badge.textContent = '+ ' + target;
+        badge.onclick = (e) => {
+          e.preventDefault();
+          let current = targetInput.value.trim();
+          if (!current) {
+            targetInput.value = target;
+          } else {
+            const list = current.split(',').map(s => s.trim());
+            if (!list.includes(target)) {
+              targetInput.value = current + ', ' + target;
+            }
+          }
+        };
+        shortcutsContainer.appendChild(badge);
+      });
+    }
+
+    if (data.jenis && SPECIES_TARGETS[data.jenis]) {
+      jenisSelect.value = data.jenis;
+      renderShortcuts(SPECIES_TARGETS[data.jenis]);
+    } else if (data.jenis) {
+      jenisSelect.value = 'Lainnya';
+    }
+
+    jenisSelect.addEventListener('change', function() {
+      const selected = this.value;
+      if (selected && selected !== 'Lainnya') {
+        jenisInput.value = selected;
+        const targets = SPECIES_TARGETS[selected] || [];
+        targetInput.value = targets.join(', ');
+        renderShortcuts(targets);
+      } else if (selected === 'Lainnya') {
+        jenisInput.focus();
+        renderShortcuts([]);
+      }
+    });
+
     renumberContohUji();
   }
 
