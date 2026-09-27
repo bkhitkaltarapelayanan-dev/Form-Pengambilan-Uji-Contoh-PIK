@@ -45,11 +45,51 @@
     border: 1px solid #000;
   }
 
+  .subsec-title {
+    font-weight: bold;
+    font-size: 10pt;
+    margin-top: 10px;
+    margin-bottom: 6px;
+    background-color: #e9ecef;
+    padding: 4px 8px;
+    border: 1px solid #999;
+    text-transform: uppercase;
+  }
+
   table.grid-table{
     width:100%;
     border-collapse:collapse;
     margin-bottom:10px;
+    table-layout: fixed;
+    word-wrap: break-word;
   }
+  table.inner-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    margin: 0 !important;
+  }
+
+  table.inner-table th, table.inner-table td {
+    padding: 3px 1px !important;
+    font-size: 8pt !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    border: 1px solid #000 !important;
+  }
+
+  table.inner-table input[type="number"] {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding: 2px 0 !important;
+    margin: 0 !important;
+    text-align: center !important;
+    font-size: 8.5pt !important;
+    box-sizing: border-box !important;
+  }
+
   table.grid-table th, table.grid-table td{
     border:1px solid #000;
     padding:5px 8px;
@@ -67,8 +107,13 @@
 
   .label-cell {
     background-color: #fcfcfc;
-    width: 32%;
     font-weight: normal;
+  }
+
+  .colon-cell {
+    width: 20px;
+    text-align: center !important;
+    padding: 5px 2px !important;
   }
   
   input[type="text"], input[type="date"], input[type="time"], input[type="number"], select, textarea{
@@ -122,20 +167,24 @@
   }
   .petugas-item span{width:20px; text-align:right; font-weight:bold;}
 
-  /* SAMPLE CARD STYLES FOR SECTION C */
-  .sample-card {
-    border: 1px solid #000;
-    margin-bottom: 16px;
+  /* COMBINED CARD STYLES FOR B & C */
+  .combined-card {
+    border: 2px solid #000;
+    margin-bottom: 24px;
     background: #fff;
+    padding: 12px;
   }
-  .sample-card-header {
-    background: #e9ecef;
-    padding: 6px 12px;
+  .combined-card-header {
+    background: #d1ecf1;
+    color: #0c5460;
+    padding: 8px 12px;
     font-weight: bold;
+    font-size: 11pt;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #000;
+    border: 1px solid #000;
+    margin-bottom: 12px;
   }
 
   /* FIELDSET LIKE INLINE INPUTS */
@@ -146,16 +195,20 @@
     flex-wrap: wrap;
   }
   .input-field-unit {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 4px;
-    background: #fff;
+    background: transparent;
+    white-space: nowrap;
   }
   .input-field-unit input[type="number"], .input-field-unit input[type="text"] {
     border: 1px solid #ccc;
-    padding: 2px 5px;
+    padding: 3px 6px;
     border-radius: 2px;
     background: #fff;
+    field-sizing: content;
+    min-width: 80px;
+    max-width: 280px;
   }
 
   #photoList {
@@ -246,7 +299,6 @@
     border-radius: 3px;
   }
 
-  /* TARGET PENYAKIT SHORTCUT BADGES */
   .target-badge {
     display: inline-block;
     background: #e0f2fe;
@@ -329,56 +381,52 @@
     margin-top: 10px;
   }
 
-  /* PAGE BREAK CLASS FOR PRINTING */
   .page-break {
     page-break-before: always;
+    break-before: page;
   }
 
-  /* MEDIA QUERIES FOR MOBILE */
   @media screen and (max-width: 650px) {
-    body{ padding: 5px; }
-    .sheet{ padding: 15px 10px; }
+    body { padding: 5px; }
+    .sheet { 
+      padding: 15px 10px; 
+      overflow-x: auto; 
+    }
     
-    input[type="text"], input[type="date"], input[type="time"], input[type="number"], select{
-      border-bottom: 1px dashed #aaa;
-      padding: 4px;
-      margin-top: 2px;
-    }
-
-    .inline-options {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 6px;
-    }
-
-    .photo-container {
-      flex-direction: column;
-    }
-    .photo-box {
-      width: 100%;
-      height: 200px;
-    }
-
     .btn-bar {
       flex-direction: column;
     }
     .btn {
       width: 100%;
     }
-
-    .input-group-inline {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-    }
   }
 
   /* MEDIA QUERIES FOR PRINT */
   @media print{
-    body{ background:#fff; padding:0; }
-    .sheet{ border:none; padding:0; width:100%; max-width:100%; box-shadow:none; }
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+
+    html, body { 
+      background: #fff !important; 
+      padding: 0 !important; 
+      margin: 0 !important; 
+      font-size: 9.5pt !important;
+      line-height: 1.25 !important;
+      color: #000 !important;
+    }
+
+    .sheet { 
+      border: none !important; 
+      padding: 0 !important; 
+      margin: 0 !important; 
+      width: 100% !important; 
+      max-width: 100% !important; 
+      box-shadow: none !important; 
+    }
     
-    .btn-bar, .btn-sm, .action-col, th.action-col, td.action-col, .btn-del-row, .modal-overlay, #btnAutoGps {
+    .btn-bar, .btn-sm, .action-col, .action-col *, th.action-col, td.action-col, .btn-del-row, .modal-overlay, #btnAutoGps {
       display: none !important;
       visibility: hidden !important;
       width: 0 !important;
@@ -387,53 +435,215 @@
       margin: 0 !important;
       border: none !important;
     }
+
+    .sec-title {
+      background-color: #e2e8f0 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      page-break-after: avoid !important;
+      break-after: avoid !important;
+      margin-top: 14px !important;
+      margin-bottom: 6px !important;
+      font-size: 10.5pt !important;
+    }
+
+    .subsec-title {
+      background-color: #f1f3f5 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      page-break-after: avoid !important;
+      break-after: avoid !important;
+      margin-top: 10px !important;
+      margin-bottom: 6px !important;
+      font-size: 9.5pt !important;
+    }
     
-    table.grid-table { display: table !important; width: 100% !important; }
-    table.grid-table tr { display: table-row !important; }
-    table.grid-table td, table.grid-table th { display: table-cell !important; border: 1px solid #000 !important; }
-    table.grid-table th { background-color:#f2f2f2 !important; }
+    table.grid-table { 
+      display: table !important; 
+      width: 100% !important; 
+      border-collapse: collapse !important;
+      margin-bottom: 8px !important;
+      page-break-inside: auto;
+      table-layout: fixed !important;
+    }
+
+    table.inner-table {
+      table-layout: fixed !important;
+      width: 100% !important;
+      border-collapse: collapse !important;
+      margin: 0 !important;
+    }
+
+    table.inner-table th, table.inner-table td {
+      padding: 2px 1px !important;
+      font-size: 7.5pt !important;
+      border: 1px solid #000 !important;
+      word-wrap: break-word !important;
+    }
+
+    table.inner-table input[type="number"] {
+      width: 100% !important;
+      min-width: 0 !important;
+      font-size: 8pt !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    table.grid-table tr { 
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+
+    table.grid-table tr[style*="display: none"],
+    table.grid-table tr[style*="display:none"] {
+      display: none !important;
+    }
+
+    table.grid-table td, table.grid-table th { 
+      display: table-cell !important; 
+      border: 1px solid #000 !important; 
+      padding: 4px 6px !important;
+      font-size: 9pt !important;
+      vertical-align: middle !important;
+      word-wrap: break-word !important;
+    }
+
+    table.grid-table th { 
+      background-color: #f2f2f2 !important; 
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    .colon-cell {
+      width: 20px !important;
+      text-align: center !important;
+    }
     
     input:not([type="checkbox"]):not([type="radio"]), select, textarea { 
       border: none !important; 
       padding: 0 !important; 
-      appearance: none; 
-      -webkit-appearance: none;
+      appearance: none !important; 
+      -webkit-appearance: none !important;
       background: transparent !important;
+      font-size: 9pt !important;
+      font-family: inherit !important;
+      width: 100% !important;
+      box-shadow: none !important;
     }
     
     input[type="checkbox"], input[type="radio"] {
-      appearance: auto !important;
-      -webkit-appearance: auto !important;
+      appearance: auto;
+      -webkit-appearance: auto;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      accent-color: #000;
+      margin-right: 4px;
+      vertical-align: middle;
+      transform: scale(1.05);
+    }
+
+    textarea { 
+      height: auto !important; 
+      min-height: 22px !important; 
+      resize: none !important;
+    }
+    
+    .combined-card {
+      border: 1px solid #000 !important;
+      margin-bottom: 12px !important;
+      padding: 8px !important;
+      background: #fff !important;
+      page-break-inside: auto !important;
+      break-inside: auto !important;
+    }
+
+    .combined-card-header {
+      background: #e2e8f0 !important;
+      color: #000 !important;
+      border: 1px solid #000 !important;
+      padding: 4px 8px !important;
+      font-size: 10pt !important;
+      margin-bottom: 8px !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
-      accent-color: #000 !important;
-      display: inline-block !important;
-      visibility: visible !important;
-      margin-right: 4px;
-      transform: scale(1.1);
     }
-    textarea { height: auto; min-height: 24px; }
-    
+
+    .inline-options, .input-group-inline {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 8px !important;
+      align-items: center !important;
+    }
+
+    .input-field-unit {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      white-space: nowrap !important;
+      width: auto !important;
+    }
+
+    .input-field-unit input[type="number"],
+    .input-field-unit input[type="text"],
+    input[type="number"] {
+      width: auto !important;
+      min-width: 60px !important;
+      max-width: 250px !important;
+      display: inline-block !important;
+      field-sizing: content !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    #photoList {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 12px !important;
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+
     .photo-container { 
       display: inline-flex !important;
       flex-direction: column !important; 
       align-items: center !important;
-      page-break-inside: avoid; 
+      page-break-inside: avoid !important; 
+      break-inside: avoid !important;
       background: #fff !important;
-      width: 180px !important;
-      margin-right: 10px !important;
-      margin-bottom: 10px !important;
+      width: 170px !important;
+      padding: 5px !important;
+      border: 1px solid #000 !important;
+      margin-right: 8px !important;
+      margin-bottom: 8px !important;
     }
+
     .photo-box { 
-      width:180px !important; 
-      height:180px !important; 
-      border:1px solid #000 !important; 
+      width: 160px !important; 
+      height: 160px !important; 
+      border: 1px solid #333 !important; 
     }
+    
     .page-break { 
       page-break-before: always !important; 
+      break-before: page !important;
     }
-    .table-responsive { overflow-x: visible !important; }
-    .sample-card { page-break-inside: avoid; }
+
+    .combined-card + .combined-card {
+      page-break-before: always !important;
+      break-before: page !important;
+    }
+
+    .table-responsive { 
+      overflow: visible !important; 
+      width: 100% !important;
+    }
+
+    .footer-note {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+      font-size: 8.5pt !important;
+      margin-top: 10px !important;
+    }
   }
 </style>
 </head>
@@ -448,16 +658,24 @@
   <!-- BAGIAN A -->
   <div class="sec-title">A. Identitas Pembudidaya</div>
   <table class="grid-table">
+    <colgroup>
+      <col style="width: 35%;">
+      <col style="width: 20px;">
+      <col style="width: auto;">
+    </colgroup>
     <tr>
       <td class="label-cell">Nama Pemilik</td>
+      <td class="colon-cell">:</td>
       <td><input type="text" id="nama_pemilik" placeholder="Nama Pemilik / Pengelola"></td>
     </tr>
     <tr>
       <td class="label-cell">Alamat Jalan / RT / RW</td>
+      <td class="colon-cell">:</td>
       <td><input type="text" id="alamat_pembudidaya" placeholder="Alamat lengkap"></td>
     </tr>
     <tr>
       <td class="label-cell">Desa / Kelurahan</td>
+      <td class="colon-cell">:</td>
       <td>
         <div style="display:flex; gap:10px;">
           <input type="text" id="desa" placeholder="Desa"> / 
@@ -467,14 +685,17 @@
     </tr>
     <tr>
       <td class="label-cell">Kecamatan</td>
+      <td class="colon-cell">:</td>
       <td><input type="text" id="kecamatan" placeholder="Kecamatan"></td>
     </tr>
     <tr>
       <td class="label-cell">Kota / Kabupaten</td>
+      <td class="colon-cell">:</td>
       <td><input type="text" id="kota_kabupaten" placeholder="Kota / Kabupaten"></td>
     </tr>
     <tr>
       <td class="label-cell">Provinsi</td>
+      <td class="colon-cell">:</td>
       <td><input type="text" id="provinsi" placeholder="Provinsi"></td>
     </tr>
     <tr>
@@ -482,6 +703,7 @@
         Koordinat (GPS)
         <button type="button" class="btn btn-sm action-col" id="btnAutoGps" style="margin-top:2px;">📍 Ambil GPS</button>
       </td>
+      <td class="colon-cell">:</td>
       <td>
         <div style="display:flex; gap:15px; flex-wrap:wrap;">
           <div style="flex:1; min-width:140px;">
@@ -495,233 +717,26 @@
     </tr>
   </table>
 
-  <!-- BAGIAN B -->
-  <div class="sec-title">B. Deskripsi Lokasi Budidaya</div>
-  <table class="grid-table">
-    <tr>
-      <td class="label-cell">Sistem Budidaya</td>
-      <td>
-        <div class="inline-options">
-          <label><input type="radio" name="sistem_budidaya" value="Super Intensif"> Super Intensif</label>
-          <label><input type="radio" name="sistem_budidaya" value="Intensif"> Intensif</label>
-          <label><input type="radio" name="sistem_budidaya" value="Semi Intensif"> Semi Intensif</label>
-          <label><input type="radio" name="sistem_budidaya" value="Tradisional"> Tradisional</label>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Luas Lokasi Budidaya</td>
-      <td>
-        <div style="display:flex; align-items:center; gap:5px;">
-          <input type="number" id="luas_lokasi" style="width:120px;"> m²
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Sertifikat Usaha CBIB / CKIB</td>
-      <td>
-        <div style="display:flex; flex-direction:column; gap:6px;">
-          <div class="inline-options">
-            <label><input type="radio" name="ada_sertifikat" value="CBIB"> CBIB</label>
-            <label><input type="radio" name="ada_sertifikat" value="CKIB"> CKIB</label>
-            <label><input type="radio" name="ada_sertifikat" value="Tidak Ada"> Tidak Ada</label>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
-            <span>Nomor Sertifikat:</span>
-            <input type="text" id="no_sertifikat" placeholder="Isi jika ada sertifikat">
-          </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Jenis Budidaya & Wadah</td>
-      <td>
-        <table class="grid-table" style="margin:0;">
-          <tr>
-            <td style="width:130px;"><strong>Pembenihan</strong></td>
-            <td>
-              <div class="inline-options">
-                <label><input type="checkbox" id="pembenihan_tawar"> Air Tawar</label>
-                <label><input type="checkbox" id="pembenihan_payau"> Air Payau</label>
-                <label><input type="checkbox" id="pembenihan_laut"> Laut</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Pembesaran</strong></td>
-            <td>
-              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:6px;">
-                <div>Kolam Air Tenang: <input type="number" id="pembesaran_kat" style="width:70px;"> m²</div>
-                <div>Kolam Air Deras: <input type="number" id="pembesaran_kad" style="width:70px;"> m²</div>
-                <div>Tambak: <input type="number" id="pembesaran_tambak" style="width:70px;"> m²</div>
-                <div>KJA: <input type="number" id="pembesaran_kja" style="width:70px;"> m²</div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Pengepul</strong></td>
-            <td>
-              Kolam: <input type="number" id="pengepul_kolam" style="width:80px;"> m²
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Padat Tebar</td>
-      <td>
-        <div style="display:flex; align-items:center; gap:5px;">
-          <input type="number" id="padat_tebar" style="width:120px;"> ekor / m²
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Umur Pemeliharaan</td>
-      <td>
-        <div style="display:flex; align-items:center; gap:5px;">
-          <input type="number" id="umur_pemeliharaan" style="width:120px;"> Bulan
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Jumlah Populasi</td>
-      <td>
-        <div style="display:flex; align-items:center; gap:5px;">
-          <input type="number" id="jumlah_populasi" style="width:120px;"> Ekor
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Tingkat Kematian</td>
-      <td>
-        <div style="display:flex; align-items:center; gap:5px;">
-          <input type="number" id="tingkat_kematian" step="0.1" style="width:120px;"> %
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Kualitas Air</td>
-      <td>
-        <div class="table-responsive">
-          <table class="grid-table" style="margin:0; text-align:center;">
-            <thead>
-              <tr>
-                <th>Suhu (°C)</th>
-                <th>Kedalaman (Cm)</th>
-                <th>Kecerahan (Cm)</th>
-                <th>Salinitas (Ppt)</th>
-                <th>Oksigen (Ppm)</th>
-                <th>pH</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><input type="number" id="qa_suhu" step="0.1" class="center"></td>
-                <td><input type="number" id="qa_kedalaman" step="0.1" class="center"></td>
-                <td><input type="number" id="qa_kecerahan" step="0.1" class="center"></td>
-                <td><input type="number" id="qa_salinitas" step="0.1" class="center"></td>
-                <td><input type="number" id="qa_oksigen" step="0.1" class="center"></td>
-                <td><input type="number" id="qa_ph" step="0.1" class="center"></td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="grid-table" style="margin-top:6px; text-align:center;">
-            <thead>
-              <tr>
-                <th>Alkalinitas (Ppm)</th>
-                <th>Kesadahan (dH)</th>
-                <th>Amonia (Ppm)</th>
-                <th>H2S (Ppm)</th>
-                <th>Nitrat (Ppm)</th>
-                <th>Nitrit (Ppm)</th>
-                <th>Phosphat (Ppm)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><input type="number" id="qa_alkalinitas" step="0.01" class="center"></td>
-                <td><input type="number" id="qa_kesadahan" step="0.01" class="center"></td>
-                <td><input type="number" id="qa_amonia" step="0.01" class="center"></td>
-                <td><input type="number" id="qa_h2s" step="0.01" class="center"></td>
-                <td><input type="number" id="qa_nitrat" step="0.01" class="center"></td>
-                <td><input type="number" id="qa_nitrit" step="0.01" class="center"></td>
-                <td><input type="number" id="qa_phosphat" step="0.01" class="center"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Potensi Sumber Penyakit Sekitar Usaha</td>
-      <td>
-        <div style="display:flex; flex-direction:column; gap:6px;">
-          <div class="inline-options">
-            <label><input type="radio" name="potensi_penyakit" value="Ya" id="potensi_ya"> Ya</label>
-            <label><input type="radio" name="potensi_penyakit" value="Tidak" id="potensi_tidak" checked> Tidak</label>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span>Sebutkan (jika Ya):</span>
-            <input type="text" id="potensi_penyakit_ket" placeholder="Keterangan sumber penyakit">
-          </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Kerugian Ekonomi dan Fisik</td>
-      <td>
-        <textarea id="kerugian_ekonomi_fisik" placeholder="Deskripsi kerugian fisik atau finansial jika ada..."></textarea>
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Upaya Pengendalian</td>
-      <td>
-        <textarea id="upaya_pengendalian" placeholder="Upaya pencegahan / pengobatan yang telah dilakukan..."></textarea>
-      </td>
-    </tr>
-  </table>
+  <!-- DYNAMIC COMBINED BLOCKS (BAGIAN B & C GABUNGAN) -->
+  <div id="combinedBlocksContainer"></div>
 
-  <!-- BAGIAN C -->
-  <div class="sec-title">C. Deskripsi Contoh Uji</div>
-  
-  <!-- IMPUT TANGGAL & WAKTU PENGAMBILAN DIBUAT DENGAN TABEL RAPI -->
-  <table class="grid-table" style="margin-bottom:14px;">
-    <tr>
-      <td class="label-cell">Tanggal Pengambilan Contoh Uji</td>
-      <td><input type="date" id="tgl_pengambilan"></td>
-    </tr>
-    <tr>
-      <td class="label-cell">Waktu & Musim / Cuaca</td>
-      <td>
-        <div style="display:flex; gap:25px; align-items:center; flex-wrap:wrap;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <span>Jam:</span> 
-            <input type="time" id="waktu_pengambilan" style="width:130px; border:1px solid #ccc; padding:2px 5px; background:#fff;">
-          </div>
-          <div class="inline-options">
-            <span>Musim:</span>
-            <label><input type="radio" name="musim" value="Penghujan"> Penghujan</label>
-            <label><input type="radio" name="musim" value="Kemarau"> Kemarau</label>
-          </div>
-        </div>
-      </td>
-    </tr>
-  </table>
-
-  <!-- DYNAMIC SAMPLE CARDS CONTAINER -->
-  <div id="contohUjiContainer"></div>
-  
   <div style="margin-bottom:20px;">
-    <button type="button" class="btn btn-add btn-sm action-col" id="btnAddContohUji" style="font-weight:bold; padding:6px 12px;">
-      + Tambah Jenis Contoh Uji
+    <button type="button" class="btn btn-add btn-sm action-col" id="btnAddCombinedBlock" style="font-weight:bold; padding:8px 16px;">
+      + Tambah Lokasi & Contoh Uji
     </button>
   </div>
 
   <!-- BAGIAN D -->
   <div class="sec-title">D. Identitas Pengambil Contoh Uji</div>
   <table class="grid-table">
+    <colgroup>
+      <col style="width: 35%;">
+      <col style="width: 20px;">
+      <col style="width: auto;">
+    </colgroup>
     <tr>
       <td class="label-cell" style="vertical-align:top;">Nama Petugas / Tim Pengambil Contoh Uji</td>
+      <td class="colon-cell" style="vertical-align:top;">:</td>
       <td>
         <div class="petugas-list" id="petugasContainer"></div>
         <button type="button" class="btn btn-sm action-col" id="btnAddPetugas" style="margin-top:8px;">+ Tambah Petugas</button>
@@ -766,15 +781,12 @@
       <h3 id="customModalTitle" style="margin:0; font-size:11pt;">Informasi</h3>
       <button type="button" id="customModalCloseX" style="cursor:pointer; background:none; border:none; font-size:16px; font-weight:bold;">✕</button>
     </div>
-    <div id="customModalBody" class="custom-modal-content">
-      <!-- Diisi dinamis -->
-    </div>
+    <div id="customModalBody" class="custom-modal-content"></div>
   </div>
 </div>
 
 <script>
 (function(){
-  // INDEXEDDB SETUP
   const DB_NAME = 'PengambilanSampleDB';
   const DB_VERSION = 1;
   const STORE_NAME = 'sampel_drafts';
@@ -839,7 +851,6 @@
     });
   }
 
-  // CUSTOM MODAL DIALOGS
   function showCustomAlert(title, message, callback){
     const modal = document.getElementById('customModal');
     document.getElementById('customModalTitle').textContent = title;
@@ -937,24 +948,340 @@
   }
   document.getElementById('btnAddPetugas').onclick = () => addPetugas();
 
-  const contohUjiContainer = document.getElementById('contohUjiContainer');
-  function addContohUji(data = {}){
-    const cardId = 'cu_item_' + Date.now() + Math.random().toString(36).substr(2,4);
-    const radioName = 'asal_contoh_uji_' + cardId;
+  // COMBINED SECTION B & C BLOCKS
+  const combinedBlocksContainer = document.getElementById('combinedBlocksContainer');
+
+  function addCombinedBlock(data = {}) {
+    const cardId = 'block_' + Date.now() + Math.random().toString(36).substr(2,4);
+    
+    const rSistem = 'sistem_budidaya_' + cardId;
+    const rSertifikat = 'ada_sertifikat_' + cardId;
+    const rPotensi = 'potensi_penyakit_' + cardId;
+    const rAsal = 'asal_contoh_uji_' + cardId;
+    const rMusim = 'musim_' + cardId;
+
     const card = document.createElement('div');
-    card.className = 'sample-card';
+    card.className = 'combined-card';
     card.innerHTML = `
-      <div class="sample-card-header">
-        <span class="cu-title-label">Jenis Contoh Uji</span>
-        <button type="button" class="btn-sm action-col btn-del-row" style="color:#d9534f; border:1px solid #d9534f; background:#fff; cursor:pointer; font-weight:bold;" onclick="this.closest('.sample-card').remove(); renumberContohUji();">Hapus Jenis Ini</button>
+      <div class="combined-card-header">
+        <span class="block-title-label">Lokasi & Contoh Uji</span>
+        <button type="button" class="btn-sm action-col btn-del-row" style="color:#d9534f; border:1px solid #d9534f; background:#fff; cursor:pointer; font-weight:bold;" onclick="this.closest('.combined-card').remove(); renumberCombinedBlocks();">Hapus Blok Ini</button>
       </div>
+
+      <!-- FORM B: LOKASI BUDIDAYA -->
+      <div class="subsec-title">B. Deskripsi Lokasi Budidaya</div>
+      <table class="grid-table">
+        <colgroup>
+          <col style="width: 35%;">
+          <col style="width: 20px;">
+          <col style="width: auto;">
+        </colgroup>
+        <tr>
+          <td class="label-cell">Sistem Budidaya</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="inline-options">
+              <label><input type="radio" name="${rSistem}" value="Super Intensif" ${data.sistem_budidaya==='Super Intensif'?'checked':''}> Super Intensif</label>
+              <label><input type="radio" name="${rSistem}" value="Intensif" ${data.sistem_budidaya==='Intensif'?'checked':''}> Intensif</label>
+              <label><input type="radio" name="${rSistem}" value="Semi Intensif" ${data.sistem_budidaya==='Semi Intensif'?'checked':''}> Semi Intensif</label>
+              <label><input type="radio" name="${rSistem}" value="Tradisional" ${data.sistem_budidaya==='Tradisional'?'checked':''}> Tradisional</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Luas Lokasi Budidaya</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="luas_lokasi" value="${data.luas_lokasi||''}" placeholder="0"> <span>m²</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Sertifikat Usaha</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="inline-options">
+              <label><input type="radio" name="${rSertifikat}" value="CBIB" ${data.ada_sertifikat==='CBIB'?'checked':''}> CBIB</label>
+              <label><input type="radio" name="${rSertifikat}" value="CKIB" ${data.ada_sertifikat==='CKIB'?'checked':''}> CKIB</label>
+              <label><input type="radio" name="${rSertifikat}" value="Tidak Ada" ${data.ada_sertifikat==='Tidak Ada'||!data.ada_sertifikat?'checked':''}> Tidak Ada</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Nomor Sertifikat CBIB/CKIB (*)</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <input type="text" class="no_sertifikat" value="${data.no_sertifikat||''}" placeholder="Isi jika ada sertifikat">
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Jenis Budidaya</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="inline-options">
+              <label><input type="checkbox" class="jenis_pembenihan" ${data.jenis_pembenihan?'checked':''}> Pembenihan</label>
+              <label><input type="checkbox" class="jenis_pembesaran" ${data.jenis_pembesaran?'checked':''}> Pembesaran</label>
+              <label><input type="checkbox" class="jenis_pengepul" ${data.jenis_pengepul?'checked':''}> Pengepul</label>
+            </div>
+          </td>
+        </tr>
+
+        <!-- SUB-BAGIAN PEMBENIHAN -->
+        <tr class="sub-row-pembenihan">
+          <td colspan="3" style="background-color:#f9f9f9; font-style:italic; font-weight:bold; padding-left:12px;">Pembenihan</td>
+        </tr>
+        <tr class="sub-row-pembenihan">
+          <td class="label-cell" style="padding-left:20px;">- Air Tawar / Air Payau / Laut (*)</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
+              <div class="inline-options">
+                <label><input type="checkbox" class="pembenihan_tawar" ${data.pembenihan_tawar?'checked':''}> Air Tawar</label>
+                <label><input type="checkbox" class="pembenihan_payau" ${data.pembenihan_payau?'checked':''}> Air Payau</label>
+                <label><input type="checkbox" class="pembenihan_laut" ${data.pembenihan_laut?'checked':''}> Laut</label>
+              </div>
+              <div class="input-field-unit">
+                <input type="number" class="pembenihan_luas" value="${data.pembenihan_luas||''}" placeholder="0"> <span>m²</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- SUB-BAGIAN PEMBESARAN -->
+        <tr class="sub-row-pembesaran">
+          <td colspan="3" style="background-color:#f9f9f9; font-style:italic; font-weight:bold; padding-left:12px;">
+            <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
+              <span>Pembesaran</span>
+              <div class="inline-options action-col" style="font-weight:normal; font-style:normal; font-size:9pt;">
+                <label><input type="checkbox" class="chk_pembesaran_kat" ${data.chk_pembesaran_kat !== false ? 'checked' : ''}> Kolam Air Tenang</label>
+                <label><input type="checkbox" class="chk_pembesaran_kad" ${data.chk_pembesaran_kad !== false ? 'checked' : ''}> Kolam Air Deras</label>
+                <label><input type="checkbox" class="chk_pembesaran_tambak" ${data.chk_pembesaran_tambak !== false ? 'checked' : ''}> Tambak</label>
+                <label><input type="checkbox" class="chk_pembesaran_kja" ${data.chk_pembesaran_kja !== false ? 'checked' : ''}> KJA</label>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="sub-row-pembesaran sub-row-pembesaran-kat">
+          <td class="label-cell" style="padding-left:20px;">- Kolam Air Tenang</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="pembesaran_kat" value="${data.pembesaran_kat||''}" placeholder="0"> <span>m²</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="sub-row-pembesaran sub-row-pembesaran-kad">
+          <td class="label-cell" style="padding-left:20px;">- Kolam Air Deras</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="pembesaran_kad" value="${data.pembesaran_kad||''}" placeholder="0"> <span>m²</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="sub-row-pembesaran sub-row-pembesaran-tambak">
+          <td class="label-cell" style="padding-left:20px;">- Tambak</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="pembesaran_tambak" value="${data.pembesaran_tambak||''}" placeholder="0"> <span>m²</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="sub-row-pembesaran sub-row-pembesaran-kja">
+          <td class="label-cell" style="padding-left:20px;">- KJA</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="pembesaran_kja" value="${data.pembesaran_kja||''}" placeholder="0"> <span>m²</span>
+            </div>
+          </td>
+        </tr>
+
+        <!-- SUB-BAGIAN PENGEPUL -->
+        <tr class="sub-row-pengepul">
+          <td colspan="3" style="background-color:#f9f9f9; font-style:italic; font-weight:bold; padding-left:12px;">Pengepul</td>
+        </tr>
+        <tr class="sub-row-pengepul">
+          <td class="label-cell" style="padding-left:20px;">- Kolam</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="pengepul_kolam" value="${data.pengepul_kolam||''}" placeholder="0"> <span>m²</span>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label-cell">Padat Tebar</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="padat_tebar" value="${data.padat_tebar||''}" placeholder="0"> <span>ekor / m²</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Umur Pemeliharaan</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="umur_pemeliharaan" value="${data.umur_pemeliharaan||''}" placeholder="0"> <span>Bulan</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Jumlah Populasi</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="jumlah_populasi" value="${data.jumlah_populasi||''}" placeholder="0"> <span>Ekor</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Tingkat Kematian</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div class="input-field-unit">
+              <input type="number" class="tingkat_kematian" value="${data.tingkat_kematian||''}" step="0.1" placeholder="0"> <span>%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Kualitas Air</td>
+          <td class="colon-cell">:</td>
+          <td style="padding:0; vertical-align:top;">
+            <div style="width:100%; overflow:hidden;">
+              <table class="grid-table inner-table" style="margin:0; text-align:center;">
+                <thead>
+                  <tr>
+                    <th>Suhu<br>(°C)</th>
+                    <th>Kedalaman<br>(Cm)</th>
+                    <th>Kecerahan<br>(Cm)</th>
+                    <th>Salinitas<br>(Ppt)</th>
+                    <th>Oksigen<br>(Ppm)</th>
+                    <th>pH</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="number" class="qa_suhu center" value="${data.qa_suhu||''}" step="0.1"></td>
+                    <td><input type="number" class="qa_kedalaman center" value="${data.qa_kedalaman||''}" step="0.1"></td>
+                    <td><input type="number" class="qa_kecerahan center" value="${data.qa_kecerahan||''}" step="0.1"></td>
+                    <td><input type="number" class="qa_salinitas center" value="${data.qa_salinitas||''}" step="0.1"></td>
+                    <td><input type="number" class="qa_oksigen center" value="${data.qa_oksigen||''}" step="0.1"></td>
+                    <td><input type="number" class="qa_ph center" value="${data.qa_ph||''}" step="0.1"></td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="grid-table inner-table" style="margin-top:-1px; text-align:center;">
+                <thead>
+                  <tr>
+                    <th>Alkalinitas<br>(Ppm)</th>
+                    <th>Kesadahan<br>(dH)</th>
+                    <th>Amonia<br>(Ppm)</th>
+                    <th>H2S<br>(Ppm)</th>
+                    <th>Nitrat<br>(Ppm)</th>
+                    <th>Nitrit<br>(Ppm)</th>
+                    <th>Phosphat<br>(Ppm)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="number" class="qa_alkalinitas center" value="${data.qa_alkalinitas||''}" step="0.01"></td>
+                    <td><input type="number" class="qa_kesadahan center" value="${data.qa_kesadahan||''}" step="0.01"></td>
+                    <td><input type="number" class="qa_amonia center" value="${data.qa_amonia||''}" step="0.01"></td>
+                    <td><input type="number" class="qa_h2s center" value="${data.qa_h2s||''}" step="0.01"></td>
+                    <td><input type="number" class="qa_nitrat center" value="${data.qa_nitrat||''}" step="0.01"></td>
+                    <td><input type="number" class="qa_nitrit center" value="${data.qa_nitrit||''}" step="0.01"></td>
+                    <td><input type="number" class="qa_phosphat center" value="${data.qa_phosphat||''}" step="0.01"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Potensi Sumber Penyakit Sekitar Usaha</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <div class="inline-options">
+                <label><input type="radio" name="${rPotensi}" value="Ya" ${data.potensi_penyakit==='Ya'?'checked':''}> Ya</label>
+                <label><input type="radio" name="${rPotensi}" value="Tidak" ${data.potensi_penyakit==='Tidak'||!data.potensi_penyakit?'checked':''}> Tidak</label>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="white-space:nowrap;">Sebutkan (jika Ya):</span>
+                <input type="text" class="potensi_penyakit_ket" value="${data.potensi_penyakit_ket||''}" placeholder="Keterangan sumber penyakit">
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Kerugian Ekonomi dan Fisik</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <textarea class="kerugian_ekonomi_fisik" placeholder="Deskripsi kerugian fisik atau finansial jika ada...">${data.kerugian_ekonomi_fisik||''}</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell">Upaya Pengendalian</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <textarea class="upaya_pengendalian" placeholder="Upaya pencegahan / pengobatan yang telah dilakukan...">${data.upaya_pengendalian||''}</textarea>
+          </td>
+        </tr>
+      </table>
+
+      <!-- FORM C: CONTOH UJI -->
+      <div class="subsec-title" style="margin-top:16px;">C. Deskripsi Contoh Uji</div>
+      
+      <table class="grid-table" style="margin-bottom:10px;">
+        <colgroup>
+          <col style="width: 35%;">
+          <col style="width: 20px;">
+          <col style="width: auto;">
+        </colgroup>
+        <tr>
+          <td class="label-cell">Tanggal Pengambilan Contoh Uji</td>
+          <td class="colon-cell">:</td>
+          <td><input type="date" class="tgl_pengambilan" value="${data.tgl_pengambilan||''}"></td>
+        </tr>
+        <tr>
+          <td class="label-cell">Waktu & Musim / Cuaca</td>
+          <td class="colon-cell">:</td>
+          <td>
+            <div style="display:flex; gap:25px; align-items:center; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span>Jam:</span> 
+                <input type="time" class="waktu_pengambilan" value="${data.waktu_pengambilan||''}" style="width:130px; border:1px solid #ccc; padding:2px 5px; background:#fff;">
+              </div>
+              <div class="inline-options">
+                <span>Musim:</span>
+                <label><input type="radio" name="${rMusim}" value="Penghujan" ${data.musim==='Penghujan'?'checked':''}> Penghujan</label>
+                <label><input type="radio" name="${rMusim}" value="Kemarau" ${data.musim==='Kemarau'?'checked':''}> Kemarau</label>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+
       <table class="grid-table" style="margin:0;">
+        <colgroup>
+          <col style="width: 35%;">
+          <col style="width: 20px;">
+          <col style="width: auto;">
+        </colgroup>
         <tr>
           <td class="label-cell">Kode Contoh Uji</td>
+          <td class="colon-cell">:</td>
           <td><input type="text" class="cu-kode" value="${data.kode||''}" placeholder="Misal: CU-2026/09/001"></td>
         </tr>
         <tr>
           <td class="label-cell">Jenis Contoh Uji (Umum / Latin)</td>
+          <td class="colon-cell">:</td>
           <td>
             <div style="display:flex; flex-direction:column; gap:5px;">
               <select class="cu-jenis-select action-col" style="border:1px solid #ccc; padding:4px; background:#fff; font-size:9.5pt;">
@@ -973,57 +1300,63 @@
         </tr>
         <tr>
           <td class="label-cell">Asal Contoh Uji</td>
+          <td class="colon-cell">:</td>
           <td>
             <div class="inline-options">
-              <label><input type="radio" name="${radioName}" value="Alam" ${data.asal==='Alam'?'checked':''}> Alam</label>
-              <label><input type="radio" name="${radioName}" value="Budidaya" ${data.asal==='Budidaya'||!data.asal?'checked':''}> Budidaya</label>
+              <label><input type="radio" name="${rAsal}" value="Alam" ${data.asal==='Alam'?'checked':''}> Alam</label>
+              <label><input type="radio" name="${rAsal}" value="Budidaya" ${data.asal==='Budidaya'||!data.asal?'checked':''}> Budidaya</label>
             </div>
           </td>
         </tr>
         <tr>
           <td class="label-cell">Lokasi Pengambilan Contoh Uji</td>
+          <td class="colon-cell">:</td>
           <td><input type="text" class="cu-lokasi" value="${data.lokasi||''}" placeholder="Spesifik lokasi / nomor kolam / petakan"></td>
         </tr>
         <tr>
           <td class="label-cell">Jumlah Contoh Uji</td>
+          <td class="colon-cell">:</td>
           <td>
             <div class="input-group-inline">
               <div class="input-field-unit">
                 <span>Hidup:</span> 
-                <input type="number" class="cu-hidup" value="${data.jumlah_hidup||''}" style="width:70px;"> <span>Ekor</span>
+                <input type="number" class="cu-hidup" value="${data.jumlah_hidup||''}"> <span>Ekor</span>
               </div>
               <div class="input-field-unit">
                 <span>Mati:</span> 
-                <input type="number" class="cu-mati" value="${data.jumlah_mati||''}" style="width:70px;"> <span>Ekor</span>
+                <input type="number" class="cu-mati" value="${data.jumlah_mati||''}"> <span>Ekor</span>
               </div>
               <div class="input-field-unit">
                 <span>Fiksatif:</span> 
-                <input type="text" class="cu-fiksatif" value="${data.fiksatif||''}" style="width:110px;" placeholder="Jenis/Larutan">
+                <input type="text" class="cu-fiksatif" value="${data.fiksatif||''}" placeholder="Jenis/Larutan">
               </div>
             </div>
           </td>
         </tr>
         <tr>
           <td class="label-cell">Ukuran Contoh Uji</td>
+          <td class="colon-cell">:</td>
           <td>
             <div class="input-group-inline">
               <div class="input-field-unit">
                 <span>Panjang:</span> 
-                <input type="number" class="cu-panjang" value="${data.ukuran_panjang||''}" step="0.1" style="width:80px;"> <span>Cm</span>
+                <input type="number" class="cu-panjang" value="${data.ukuran_panjang||''}" step="0.1"> <span>Cm</span>
               </div>
               <div class="input-field-unit">
                 <span>Berat:</span> 
-                <input type="number" class="cu-berat" value="${data.ukuran_berat||''}" step="0.1" style="width:80px;"> <span>Gram</span>
+                <input type="number" class="cu-berat" value="${data.ukuran_berat||''}" step="0.1"> <span>Gram</span>
               </div>
             </div>
           </td>
         </tr>
         <tr>
           <td class="label-cell">Gejala Klinis</td>
+          <td class="colon-cell">:</td>
           <td><textarea class="cu-gejala" placeholder="Deskripsi kelainan fisik / tingkah laku contoh uji...">${data.gejala_klinis||''}</textarea></td>
         </tr>
         <tr>
           <td class="label-cell">Target Penyakit</td>
+          <td class="colon-cell">:</td>
           <td>
             <input type="text" class="cu-target" value="${data.target_penyakit||''}" placeholder="Target parasit / bakteri / virus...">
             <div class="cu-target-shortcuts action-col" style="display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; align-items:center;"></div>
@@ -1031,11 +1364,13 @@
         </tr>
         <tr>
           <td class="label-cell">Anamnesa</td>
+          <td class="colon-cell">:</td>
           <td><textarea class="cu-anamnesa" placeholder="Riwayat pakan, kematian, atau perlakuan obat sebelumnya...">${data.anamnesa||''}</textarea></td>
         </tr>
       </table>
     `;
-    contohUjiContainer.appendChild(card);
+
+    combinedBlocksContainer.appendChild(card);
 
     const jenisSelect = card.querySelector('.cu-jenis-select');
     const jenisInput = card.querySelector('.cu-jenis');
@@ -1094,16 +1429,97 @@
       }
     });
 
-    renumberContohUji();
+    function updateSubRowsVisibility() {
+      const chkPembenihan = card.querySelector('.jenis_pembenihan');
+      const chkPembesaran = card.querySelector('.jenis_pembesaran');
+      const chkPengepul = card.querySelector('.jenis_pengepul');
+
+      const chkKat = card.querySelector('.chk_pembesaran_kat');
+      const chkKad = card.querySelector('.chk_pembesaran_kad');
+      const chkTambak = card.querySelector('.chk_pembesaran_tambak');
+      const chkKja = card.querySelector('.chk_pembesaran_kja');
+
+      card.querySelectorAll('.sub-row-pembenihan').forEach(row => {
+        row.style.display = chkPembenihan.checked ? 'table-row' : 'none';
+      });
+
+      card.querySelectorAll('.sub-row-pembesaran').forEach(row => {
+        row.style.display = 'none';
+      });
+
+      if (chkPembesaran.checked) {
+        const headerRow = card.querySelector('.sub-row-pembesaran');
+        if (headerRow) headerRow.style.display = 'table-row';
+
+        const rowKat = card.querySelector('.sub-row-pembesaran-kat');
+        if (rowKat) rowKat.style.display = chkKat && chkKat.checked ? 'table-row' : 'none';
+
+        const rowKad = card.querySelector('.sub-row-pembesaran-kad');
+        if (rowKad) rowKad.style.display = chkKad && chkKad.checked ? 'table-row' : 'none';
+
+        const rowTambak = card.querySelector('.sub-row-pembesaran-tambak');
+        if (rowTambak) rowTambak.style.display = chkTambak && chkTambak.checked ? 'table-row' : 'none';
+
+        const rowKja = card.querySelector('.sub-row-pembesaran-kja');
+        if (rowKja) rowKja.style.display = chkKja && chkKja.checked ? 'table-row' : 'none';
+      }
+
+      card.querySelectorAll('.sub-row-pengepul').forEach(row => {
+        row.style.display = chkPengepul.checked ? 'table-row' : 'none';
+      });
+    }
+
+    card.querySelector('.jenis_pembenihan').addEventListener('change', updateSubRowsVisibility);
+    card.querySelector('.jenis_pembesaran').addEventListener('change', updateSubRowsVisibility);
+    card.querySelector('.jenis_pengepul').addEventListener('change', updateSubRowsVisibility);
+
+    card.querySelector('.chk_pembesaran_kat').addEventListener('change', updateSubRowsVisibility);
+    card.querySelector('.chk_pembesaran_kad').addEventListener('change', updateSubRowsVisibility);
+    card.querySelector('.chk_pembesaran_tambak').addEventListener('change', updateSubRowsVisibility);
+    card.querySelector('.chk_pembesaran_kja').addEventListener('change', updateSubRowsVisibility);
+
+    updateSubRowsVisibility();
+    renumberCombinedBlocks();
+    updateAllUnitWidths(card);
   }
 
-  function renumberContohUji(){
-    Array.from(contohUjiContainer.querySelectorAll('.sample-card')).forEach((card, i) => {
-      card.querySelector('.cu-title-label').textContent = `Jenis Contoh Uji #${i + 1}`;
+  function adjustInputUnitWidth(input) {
+    if (!input) return;
+    const val = input.value || '';
+    if (val.length < 5) {
+      input.style.width = '70px';
+    } else {
+      input.style.width = (val.length + 2.5) + 'ch';
+    }
+  }
+
+  document.addEventListener('input', (e) => {
+    if (e.target && e.target.closest('.input-field-unit')) {
+      adjustInputUnitWidth(e.target);
+    }
+  });
+
+  function updateAllUnitWidths(container = document) {
+    container.querySelectorAll('.input-field-unit input').forEach(input => {
+      adjustInputUnitWidth(input);
     });
   }
-  document.getElementById('btnAddContohUji').onclick = () => addContohUji();
 
+  function renumberCombinedBlocks(){
+    const cards = Array.from(combinedBlocksContainer.querySelectorAll('.combined-card'));
+    cards.forEach((card, i) => {
+      card.querySelector('.block-title-label').textContent = `Lokasi & Contoh Uji #${i + 1}`;
+      if (i > 0) {
+        card.classList.add('page-break');
+      } else {
+        card.classList.remove('page-break');
+      }
+    });
+  }
+
+  document.getElementById('btnAddCombinedBlock').onclick = () => addCombinedBlock();
+
+  // FOTO DOKUMENTASI
   const photoList = document.getElementById('photoList');
   function addPhotoBlock(data = {}){
     const id = 'img_input_' + Date.now() + Math.random().toString(36).substr(2,4);
@@ -1138,31 +1554,81 @@
   document.getElementById('btnAddPhoto').onclick = () => addPhotoBlock();
 
   // GPS GEOLOCATION
-  document.getElementById('btnAutoGps').onclick = () => {
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(pos => {
-        document.getElementById('koordinat_lat').value = pos.coords.latitude.toFixed(6);
-        document.getElementById('koordinat_long').value = pos.coords.longitude.toFixed(6);
-      }, () => showCustomAlert('Peringatan', 'Gagal membaca lokasi GPS. Pastikan izin lokasi diaktifkan.'));
-    } else {
-      showCustomAlert('Informasi', 'Browser Anda tidak mendukung fitur Geolocation.');
-    }
-  };
+  const btnAutoGps = document.getElementById('btnAutoGps');
+  const gpsFileWarning = document.getElementById('gpsFileWarning');
 
-  // HELPER RADIO
-  function getRadioValue(name){
-    const el = document.querySelector(`input[name="${name}"]:checked`);
+  if (window.location.protocol === 'file:' && gpsFileWarning) {
+    gpsFileWarning.style.display = 'block';
+  }
+
+  if (btnAutoGps) {
+    btnAutoGps.onclick = () => {
+      if (!navigator.geolocation) {
+        showCustomAlert('Informasi', 'Browser Anda tidak mendukung fitur Geolocation.');
+        return;
+      }
+
+      const isFileProtocol = window.location.protocol === 'file:';
+
+      btnAutoGps.disabled = true;
+      const originalText = btnAutoGps.textContent;
+      btnAutoGps.textContent = '⏳ Mengambil GPS...';
+
+      // Opsi dioptimalkan untuk penguncian satelit hardware offline
+      const options = {
+        enableHighAccuracy: true, // Wajib aktifkan GPS Chip hardware
+        timeout: 20000,          // Waktu tunggu 20 detik (offline butuh waktu lebih lama)
+        maximumAge: 60000        // Gunakan cache lokasi 1 menit terakhir jika tersedia
+      };
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          document.getElementById('koordinat_lat').value = pos.coords.latitude.toFixed(6);
+          document.getElementById('koordinat_long').value = pos.coords.longitude.toFixed(6);
+          btnAutoGps.disabled = false;
+          btnAutoGps.textContent = originalText;
+          showCustomAlert('Berhasil', 'Koordinat GPS berhasil diperoleh!');
+        },
+        (err) => {
+          btnAutoGps.disabled = false;
+          btnAutoGps.textContent = originalText;
+          let msg = 'Gagal membaca lokasi GPS.';
+
+          if (err.code === 1) { // PERMISSION_DENIED
+            msg = 'Akses lokasi ditolak oleh browser/HP.';
+            if (isFileProtocol) {
+              msg += '<br><br><b>Penyebab Utama:</b> Anda membuka file langsung dari direktori lokal (<i>file://</i>). Kebanyakan browser (Chrome/Edge/Android) memblokir izin GPS pada file lokal demi keamanan.';
+            } else {
+              msg += ' Mohon izinkan akses Lokasi/GPS di pengaturan browser dan HP Anda.';
+            }
+          } else if (err.code === 2) { // POSITION_UNAVAILABLE
+            msg = 'Sinyal lokasi tidak ditemukan.<br><br><b>Tips Offline:</b><br>1. Pastikan fitur <b>Lokasi (GPS)</b> di HP sudah aktif.<br>2. Saat offline tanpa Internet/Wi-Fi, pastikan Anda berada di luar ruangan (outdoor) agar HP dapat menangkap sinyal satelit GPS langsung.';
+          } else if (err.code === 3) { // TIMEOUT
+            msg = 'Waktu permintaan lokasi habis (timeout).<br><br>Saat offline, penguncian sinyal satelit GPS membutuhkan waktu 10–20 detik. Silakan coba klik tombol <b>Ambil GPS</b> sekali lagi.';
+          } else if (err.message) {
+            msg += ' (' + err.message + ')';
+          }
+
+          if (isFileProtocol && err.code !== 1) {
+            msg += '<br><br><small><b>Catatan Tambahan:</b> Jika terus gagal saat buka file HTML langsung, jalankan file menggunakan aplikasi <b>HTTP Server / Live Server</b> lokal.</small>';
+          }
+
+          showCustomAlert('Peringatan GPS', msg);
+        },
+        options
+      );
+    };
+  }
+
+  function getRadioValueInCard(card, namePrefix){
+    const el = card.querySelector(`input[name^="${namePrefix}"]:checked`);
     return el ? el.value : '';
   }
-  function setRadioValue(name, val){
-    const el = document.querySelector(`input[name="${name}"][value="${val}"]`);
-    if(el) el.checked = true;
-  }
 
+  // SAVE DRAFT
   document.getElementById('btnSave').onclick = () => {
     const pemilik = document.getElementById('nama_pemilik').value.trim();
-    const tgl = document.getElementById('tgl_pengambilan').value;
-    const defaultTitle = pemilik ? `Sampel: ${pemilik} (${tgl||'Tanpa Tgl'})` : `Draf Sampel ${new Date().toLocaleString('id-ID')}`;
+    const defaultTitle = pemilik ? `Sampel: ${pemilik}` : `Draf Sampel ${new Date().toLocaleString('id-ID')}`;
 
     showCustomPrompt("Masukkan nama / judul draf ini:", defaultTitle, async (draftTitle) => {
       if(draftTitle === null || draftTitle.trim() === '') return;
@@ -1173,7 +1639,6 @@
         timestamp: new Date().toLocaleString('id-ID'),
         rawTime: Date.now(),
         data: {
-          // A
           nama_pemilik: document.getElementById('nama_pemilik').value,
           alamat_pembudidaya: document.getElementById('alamat_pembudidaya').value,
           desa: document.getElementById('desa').value,
@@ -1183,52 +1648,57 @@
           provinsi: document.getElementById('provinsi').value,
           koordinat_lat: document.getElementById('koordinat_lat').value,
           koordinat_long: document.getElementById('koordinat_long').value,
-          // B
-          sistem_budidaya: getRadioValue('sistem_budidaya'),
-          luas_lokasi: document.getElementById('luas_lokasi').value,
-          ada_sertifikat: getRadioValue('ada_sertifikat'),
-          no_sertifikat: document.getElementById('no_sertifikat').value,
-          pembenihan_tawar: document.getElementById('pembenihan_tawar').checked,
-          pembenihan_payau: document.getElementById('pembenihan_payau').checked,
-          pembenihan_laut: document.getElementById('pembenihan_laut').checked,
-          pembesaran_kat: document.getElementById('pembesaran_kat').value,
-          pembesaran_kad: document.getElementById('pembesaran_kad').value,
-          pembesaran_tambak: document.getElementById('pembesaran_tambak').value,
-          pembesaran_kja: document.getElementById('pembesaran_kja').value,
-          pengepul_kolam: document.getElementById('pengepul_kolam').value,
-          padat_tebar: document.getElementById('padat_tebar').value,
-          umur_pemeliharaan: document.getElementById('umur_pemeliharaan').value,
-          jumlah_populasi: document.getElementById('jumlah_populasi').value,
-          tingkat_kematian: document.getElementById('tingkat_kematian').value,
-          // Water Quality
-          qa_suhu: document.getElementById('qa_suhu').value,
-          qa_kedalaman: document.getElementById('qa_kedalaman').value,
-          qa_kecerahan: document.getElementById('qa_kecerahan').value,
-          qa_salinitas: document.getElementById('qa_salinitas').value,
-          qa_oksigen: document.getElementById('qa_oksigen').value,
-          qa_ph: document.getElementById('qa_ph').value,
-          qa_alkalinitas: document.getElementById('qa_alkalinitas').value,
-          qa_kesadahan: document.getElementById('qa_kesadahan').value,
-          qa_amonia: document.getElementById('qa_amonia').value,
-          qa_h2s: document.getElementById('qa_h2s').value,
-          qa_nitrat: document.getElementById('qa_nitrat').value,
-          qa_nitrit: document.getElementById('qa_nitrit').value,
-          qa_phosphat: document.getElementById('qa_phosphat').value,
-          potensi_penyakit: getRadioValue('potensi_penyakit'),
-          potensi_penyakit_ket: document.getElementById('potensi_penyakit_ket').value,
-          kerugian_ekonomi_fisik: document.getElementById('kerugian_ekonomi_fisik').value,
-          upaya_pengendalian: document.getElementById('upaya_pengendalian').value,
-          // C General
-          tgl_pengambilan: document.getElementById('tgl_pengambilan').value,
-          waktu_pengambilan: document.getElementById('waktu_pengambilan').value,
-          musim: getRadioValue('musim'),
-          // C Dynamic Array
-          contoh_uji: Array.from(contohUjiContainer.querySelectorAll('.sample-card')).map(card => {
-            const radChecked = card.querySelector('input[type="radio"]:checked');
+          
+          lokasi_dan_contoh_uji: Array.from(combinedBlocksContainer.querySelectorAll('.combined-card')).map(card => {
             return {
+              sistem_budidaya: getRadioValueInCard(card, 'sistem_budidaya_'),
+              luas_lokasi: card.querySelector('.luas_lokasi').value,
+              ada_sertifikat: getRadioValueInCard(card, 'ada_sertifikat_'),
+              no_sertifikat: card.querySelector('.no_sertifikat').value,
+              jenis_pembenihan: card.querySelector('.jenis_pembenihan')?.checked,
+              jenis_pembesaran: card.querySelector('.jenis_pembesaran')?.checked,
+              jenis_pengepul: card.querySelector('.jenis_pengepul')?.checked,
+              chk_pembesaran_kat: card.querySelector('.chk_pembesaran_kat')?.checked,
+              chk_pembesaran_kad: card.querySelector('.chk_pembesaran_kad')?.checked,
+              chk_pembesaran_tambak: card.querySelector('.chk_pembesaran_tambak')?.checked,
+              chk_pembesaran_kja: card.querySelector('.chk_pembesaran_kja')?.checked,
+              pembenihan_tawar: card.querySelector('.pembenihan_tawar').checked,
+              pembenihan_payau: card.querySelector('.pembenihan_payau').checked,
+              pembenihan_laut: card.querySelector('.pembenihan_laut').checked,
+              pembenihan_luas: card.querySelector('.pembenihan_luas')?.value,
+              pembesaran_kat: card.querySelector('.pembesaran_kat').value,
+              pembesaran_kad: card.querySelector('.pembesaran_kad').value,
+              pembesaran_tambak: card.querySelector('.pembesaran_tambak').value,
+              pembesaran_kja: card.querySelector('.pembesaran_kja').value,
+              pengepul_kolam: card.querySelector('.pengepul_kolam').value,
+              padat_tebar: card.querySelector('.padat_tebar').value,
+              umur_pemeliharaan: card.querySelector('.umur_pemeliharaan').value,
+              jumlah_populasi: card.querySelector('.jumlah_populasi').value,
+              tingkat_kematian: card.querySelector('.tingkat_kematian').value,
+              qa_suhu: card.querySelector('.qa_suhu').value,
+              qa_kedalaman: card.querySelector('.qa_kedalaman').value,
+              qa_kecerahan: card.querySelector('.qa_kecerahan').value,
+              qa_salinitas: card.querySelector('.qa_salinitas').value,
+              qa_oksigen: card.querySelector('.qa_oksigen').value,
+              qa_ph: card.querySelector('.qa_ph').value,
+              qa_alkalinitas: card.querySelector('.qa_alkalinitas').value,
+              qa_kesadahan: card.querySelector('.qa_kesadahan').value,
+              qa_amonia: card.querySelector('.qa_amonia').value,
+              qa_h2s: card.querySelector('.qa_h2s').value,
+              qa_nitrat: card.querySelector('.qa_nitrat').value,
+              qa_nitrit: card.querySelector('.qa_nitrit').value,
+              qa_phosphat: card.querySelector('.qa_phosphat').value,
+              potensi_penyakit: getRadioValueInCard(card, 'potensi_penyakit_'),
+              potensi_penyakit_ket: card.querySelector('.potensi_penyakit_ket').value,
+              kerugian_ekonomi_fisik: card.querySelector('.kerugian_ekonomi_fisik').value,
+              upaya_pengendalian: card.querySelector('.upaya_pengendalian').value,
+
+              tgl_pengambilan: card.querySelector('.tgl_pengambilan').value,
+              waktu_pengambilan: card.querySelector('.waktu_pengambilan').value,
+              musim: getRadioValueInCard(card, 'musim_'),
               kode: card.querySelector('.cu-kode').value,
               jenis: card.querySelector('.cu-jenis').value,
-              asal: radChecked ? radChecked.value : '',
+              asal: getRadioValueInCard(card, 'asal_contoh_uji_'),
               lokasi: card.querySelector('.cu-lokasi').value,
               jumlah_hidup: card.querySelector('.cu-hidup').value,
               jumlah_mati: card.querySelector('.cu-mati').value,
@@ -1240,9 +1710,8 @@
               anamnesa: card.querySelector('.cu-anamnesa').value
             };
           }),
-          // D
+
           petugas: Array.from(document.querySelectorAll('.inp-petugas')).map(i => i.value),
-          // E Dynamic Photos
           photos: Array.from(photoList.children).map(div => ({
             img: div.querySelector('img').src
           }))
@@ -1258,7 +1727,6 @@
     });
   };
 
-  // OPEN DRAFTS MODAL
   const modal = document.getElementById('draftModal');
   document.getElementById('btnOpenDrafts').onclick = async () => {
     await renderDraftList();
@@ -1313,7 +1781,7 @@
       container.querySelectorAll('.btn-del').forEach(btn => {
         btn.onclick = (e) => {
           const id = e.target.getAttribute('data-id');
-          showCustomConfirm('Konfirmasi', 'Hapus draf ini?', async () => {
+          showCustomConfirm('Konfirmasi', 'Hapus draf me ini?', async () => {
             await dbDeleteDraft(id);
             renderDraftList();
           });
@@ -1335,58 +1803,13 @@
     document.getElementById('koordinat_lat').value = data.koordinat_lat || '';
     document.getElementById('koordinat_long').value = data.koordinat_long || '';
 
-    setRadioValue('sistem_budidaya', data.sistem_budidaya || '');
-    document.getElementById('luas_lokasi').value = data.luas_lokasi || '';
-    setRadioValue('ada_sertifikat', data.ada_sertifikat || '');
-    document.getElementById('no_sertifikat').value = data.no_sertifikat || '';
-
-    document.getElementById('pembenihan_tawar').checked = !!data.pembenihan_tawar;
-    document.getElementById('pembenihan_payau').checked = !!data.pembenihan_payau;
-    document.getElementById('pembenihan_laut').checked = !!data.pembenihan_laut;
-
-    document.getElementById('pembesaran_kat').value = data.pembesaran_kat || '';
-    document.getElementById('pembesaran_kad').value = data.pembesaran_kad || '';
-    document.getElementById('pembesaran_tambak').value = data.pembesaran_tambak || '';
-    document.getElementById('pembesaran_kja').value = data.pembesaran_kja || '';
-    document.getElementById('pengepul_kolam').value = data.pengepul_kolam || '';
-
-    document.getElementById('padat_tebar').value = data.padat_tebar || '';
-    document.getElementById('umur_pemeliharaan').value = data.umur_pemeliharaan || '';
-    document.getElementById('jumlah_populasi').value = data.jumlah_populasi || '';
-    document.getElementById('tingkat_kematian').value = data.tingkat_kematian || '';
-
-    document.getElementById('qa_suhu').value = data.qa_suhu || '';
-    document.getElementById('qa_kedalaman').value = data.qa_kedalaman || '';
-    document.getElementById('qa_kecerahan').value = data.qa_kecerahan || '';
-    document.getElementById('qa_salinitas').value = data.qa_salinitas || '';
-    document.getElementById('qa_oksigen').value = data.qa_oksigen || '';
-    document.getElementById('qa_ph').value = data.qa_ph || '';
-    document.getElementById('qa_alkalinitas').value = data.qa_alkalinitas || '';
-    document.getElementById('qa_kesadahan').value = data.qa_kesadahan || '';
-    document.getElementById('qa_amonia').value = data.qa_amonia || '';
-    document.getElementById('qa_h2s').value = data.qa_h2s || '';
-    document.getElementById('qa_nitrat').value = data.qa_nitrat || '';
-    document.getElementById('qa_nitrit').value = data.qa_nitrit || '';
-    document.getElementById('qa_phosphat').value = data.qa_phosphat || '';
-
-    setRadioValue('potensi_penyakit', data.potensi_penyakit || 'Tidak');
-    document.getElementById('potensi_penyakit_ket').value = data.potensi_penyakit_ket || '';
-    document.getElementById('kerugian_ekonomi_fisik').value = data.kerugian_ekonomi_fisik || '';
-    document.getElementById('upaya_pengendalian').value = data.upaya_pengendalian || '';
-
-    document.getElementById('tgl_pengambilan').value = data.tgl_pengambilan || '';
-    document.getElementById('waktu_pengambilan').value = data.waktu_pengambilan || '';
-    setRadioValue('musim', data.musim || '');
-
-    // Restore Contoh Uji list
-    contohUjiContainer.innerHTML = '';
-    if(data.contoh_uji && data.contoh_uji.length > 0){
-      data.contoh_uji.forEach(cu => addContohUji(cu));
+    combinedBlocksContainer.innerHTML = '';
+    if(data.lokasi_dan_contoh_uji && data.lokasi_dan_contoh_uji.length > 0){
+      data.lokasi_dan_contoh_uji.forEach(item => addCombinedBlock(item));
     } else {
-      addContohUji();
+      addCombinedBlock();
     }
 
-    // Restore Petugas list
     petugasContainer.innerHTML = '';
     if(data.petugas && data.petugas.length > 0){
       data.petugas.forEach(p => addPetugas(p));
@@ -1394,17 +1817,17 @@
       for(let i=0; i<3; i++) addPetugas();
     }
 
-    // Restore Photos list
     photoList.innerHTML = '';
     if(data.photos && data.photos.length > 0){
       data.photos.forEach(ph => addPhotoBlock(ph));
     } else {
       addPhotoBlock();
     }
+
+    updateAllUnitWidths();
   }
 
-  // Initializing default empty fields
-  addContohUji();
+  addCombinedBlock();
   for(let i=0; i<3; i++) addPetugas();
   addPhotoBlock();
 
