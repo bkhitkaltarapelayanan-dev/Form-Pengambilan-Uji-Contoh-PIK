@@ -793,7 +793,7 @@
 
   const SPECIES_TARGETS = {
     'Nila (Oreochromis niloticus)': ['VNN', 'EUS', 'E. Ictaluri'],
-    'Mas (Cyprinus carpio)': ['SVCV', 'E. Ictaluri'],
+    'Mas (Cyprinus carpio)': ['SVCV', 'KHV'],
     'Lele (Clarias batrachus)': ['EUS', 'E. Ictaluri'],
     'Patin (Pangasius spp.)': ['E. Ictaluri'],
     'Udang Windu (Penaeus monodon)': ['WSSV', 'IMNV', 'IHHNV', 'AHPND'],
@@ -927,7 +927,6 @@
     };
   }
 
-  // PETUGAS DYNAMIC LIST
   const petugasContainer = document.getElementById('petugasContainer');
   function addPetugas(val = ''){
     const idx = petugasContainer.children.length + 1;
@@ -948,7 +947,6 @@
   }
   document.getElementById('btnAddPetugas').onclick = () => addPetugas();
 
-  // COMBINED SECTION B & C BLOCKS
   const combinedBlocksContainer = document.getElementById('combinedBlocksContainer');
 
   function addCombinedBlock(data = {}) {
@@ -1519,7 +1517,6 @@
 
   document.getElementById('btnAddCombinedBlock').onclick = () => addCombinedBlock();
 
-  // FOTO DOKUMENTASI
   const photoList = document.getElementById('photoList');
   function addPhotoBlock(data = {}){
     const id = 'img_input_' + Date.now() + Math.random().toString(36).substr(2,4);
@@ -1553,7 +1550,6 @@
   }
   document.getElementById('btnAddPhoto').onclick = () => addPhotoBlock();
 
-  // GPS GEOLOCATION
   const btnAutoGps = document.getElementById('btnAutoGps');
   const gpsFileWarning = document.getElementById('gpsFileWarning');
 
@@ -1574,11 +1570,10 @@
       const originalText = btnAutoGps.textContent;
       btnAutoGps.textContent = '⏳ Mengambil GPS...';
 
-      // Opsi dioptimalkan untuk penguncian satelit hardware offline
       const options = {
-        enableHighAccuracy: true, // Wajib aktifkan GPS Chip hardware
-        timeout: 20000,          // Waktu tunggu 20 detik (offline butuh waktu lebih lama)
-        maximumAge: 60000        // Gunakan cache lokasi 1 menit terakhir jika tersedia
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 60000
       };
 
       navigator.geolocation.getCurrentPosition(
@@ -1594,16 +1589,16 @@
           btnAutoGps.textContent = originalText;
           let msg = 'Gagal membaca lokasi GPS.';
 
-          if (err.code === 1) { // PERMISSION_DENIED
+          if (err.code === 1) {
             msg = 'Akses lokasi ditolak oleh browser/HP.';
             if (isFileProtocol) {
               msg += '<br><br><b>Penyebab Utama:</b> Anda membuka file langsung dari direktori lokal (<i>file://</i>). Kebanyakan browser (Chrome/Edge/Android) memblokir izin GPS pada file lokal demi keamanan.';
             } else {
               msg += ' Mohon izinkan akses Lokasi/GPS di pengaturan browser dan HP Anda.';
             }
-          } else if (err.code === 2) { // POSITION_UNAVAILABLE
+          } else if (err.code === 2) {
             msg = 'Sinyal lokasi tidak ditemukan.<br><br><b>Tips Offline:</b><br>1. Pastikan fitur <b>Lokasi (GPS)</b> di HP sudah aktif.<br>2. Saat offline tanpa Internet/Wi-Fi, pastikan Anda berada di luar ruangan (outdoor) agar HP dapat menangkap sinyal satelit GPS langsung.';
-          } else if (err.code === 3) { // TIMEOUT
+          } else if (err.code === 3) {
             msg = 'Waktu permintaan lokasi habis (timeout).<br><br>Saat offline, penguncian sinyal satelit GPS membutuhkan waktu 10–20 detik. Silakan coba klik tombol <b>Ambil GPS</b> sekali lagi.';
           } else if (err.message) {
             msg += ' (' + err.message + ')';
@@ -1625,7 +1620,6 @@
     return el ? el.value : '';
   }
 
-  // SAVE DRAFT
   document.getElementById('btnSave').onclick = () => {
     const pemilik = document.getElementById('nama_pemilik').value.trim();
     const defaultTitle = pemilik ? `Sampel: ${pemilik}` : `Draf Sampel ${new Date().toLocaleString('id-ID')}`;
@@ -1781,7 +1775,7 @@
       container.querySelectorAll('.btn-del').forEach(btn => {
         btn.onclick = (e) => {
           const id = e.target.getAttribute('data-id');
-          showCustomConfirm('Konfirmasi', 'Hapus draf me ini?', async () => {
+          showCustomConfirm('Konfirmasi', 'Hapus draf ini?', async () => {
             await dbDeleteDraft(id);
             renderDraftList();
           });
@@ -1805,7 +1799,7 @@
 
     combinedBlocksContainer.innerHTML = '';
     if(data.lokasi_dan_contoh_uji && data.lokasi_dan_contoh_uji.length > 0){
-      data.lokasi_dan_contoh_uji.forEach(item => addCombinedBlock(item));
+      data.lokasi_dan_contoh_uji.forEeach(item => addCombinedBlock(item));
     } else {
       addCombinedBlock();
     }
